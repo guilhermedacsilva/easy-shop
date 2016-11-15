@@ -1,0 +1,65 @@
+h2 {
+  margin-top: 0;
+}
+.alert-compact {
+  padding: 0 4px;
+  margin-bottom: 5px;
+}
+.timetable {
+    overflow: hidden;
+    font: 12px sans-serif;
+    border-right: 1px solid #888888;
+    border-bottom: 1px solid #888888;
+}
+
+.timetable .column-hour {
+    float: left;
+    width: 6.2%;
+    text-align: right;
+}
+.timetable .column-hour div {
+    height: 60px;
+    padding-top: 2px;
+    padding-right: 2px;
+    border-top: 1px solid #888888;
+    border-left: 1px solid #888888;
+}
+.timetable .column-hour > header {
+    overflow: hidden;
+    height: 20px;
+}
+
+.timetable .column {
+    float: left;
+    position: relative;
+    width: 13.4%;
+}
+.timetable .column > header {
+    overflow: hidden;
+    height: 20px;
+    border-top: 1px solid #888888;
+    border-left: 1px solid #888888;
+    text-align: center;
+}
+.timetable .column div {
+    overflow: hidden;
+    background: url('../img/timetable-background.png');
+    border-left: 1px solid #888888;
+}
+
+.timetable article {
+    overflow: hidden;
+    padding-top: 2px;
+    padding-left: 4px;
+    border: 1px solid #2255aa;
+    position: absolute;
+    background: #4477cc;
+    color: white;
+    font-size: 0.9em;
+}
+
+@media all and (max-width: 630px) {
+    .timetable {
+        font: 8px sans-serif;
+    }
+}
