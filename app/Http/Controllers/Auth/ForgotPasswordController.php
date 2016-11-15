@@ -1,8 +1,8 @@
 <?php
 
-namespace Gym\Http\Controllers\Auth;
+namespace EasyShop\Http\Controllers\Auth;
 
-use Gym\Http\Controllers\Controller;
+use EasyShop\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class ForgotPasswordController extends Controller

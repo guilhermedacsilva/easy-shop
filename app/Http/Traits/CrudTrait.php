@@ -1,6 +1,6 @@
 <?php
 
-namespace Gym\Http\Traits;
+namespace EasyShop\Http\Traits;
 
 use App;
 use Illuminate\Http\Request;
@@ -30,12 +30,39 @@ trait CrudTrait {
         return $this->createFormView();
     }
 
+    public function store(Request $request)
+    {
+        $validationArray = $this->getStoreValidationArray($request);
+        $this->validate($request, $validationArray);
+
+        $fields = array_keys($validationArray);
+        $data = $this->createStoreData($request->only($fields));
+        $this->getCrudFullClassName()::create($data);
+
+        return redirect()->route($this->getCrudRoute('index'))
+                        ->with('success', $this->crudModelName.' created successfully');
+    }
+
     public function edit($id)
     {
         return $this->createFormView([
             'action' => 'edit',
             'record' => $this->findById($id),
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validationArray = $this->getUpdateValidationArray($request, $id);
+        $this->validate($request, $validationArray);
+
+        $fields = array_keys($validationArray);
+        $record = $this->getCrudFullClassName()::find($id);
+        $data = $this->createUpdateData($request->only($fields), $record);
+        $record->update($data);
+
+        return redirect()->route($this->getCrudRoute('index'))
+                        ->with('success', $this->crudModelName.' updated successfully');
     }
 
     public function show($id)
@@ -50,6 +77,35 @@ trait CrudTrait {
         $this->getCrudFullClassName()::destroy($id);
         return redirect()->route($this->getCrudRoute('index'))
                         ->with('success',$this->crudModelName.' deleted successfully');
+    }
+
+
+    /*
+    The array will be passed to $this->validate(...)
+    The keys will be passed to $request->only(...)
+    */
+    protected function getStoreValidationArray($request)
+    {
+        return $this->getDefaultValidationArray($request);
+    }
+    protected function getUpdateValidationArray($request, $id)
+    {
+        return $this->getDefaultValidationArray($request);
+    }
+    protected function getDefaultValidationArray($request)
+    {
+        return [
+            'name' => 'required|between:1,255',
+        ];
+    }
+
+    protected function createStoreData($data)
+    {
+        return $data;
+    }
+    protected function createUpdateData($data, $record)
+    {
+        return $data;
     }
 
     protected function createView($data) {

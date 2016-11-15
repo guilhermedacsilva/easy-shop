@@ -17,14 +17,12 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::get('home', function() {
-    return redirect('sessions');
-});
 
 Route::group(['middleware' => 'auth'], function(){
-  Route::resource('users', 'UserController');
-  Route::get('users/{user}/password', 'UserController@editPassword')->name('users.password.edit');
-  Route::patch('users/{user}/password', 'UserController@updatePassword')->name('users.password.update');
-  Route::patch('users/{user}/disable', 'UserController@disable')->name('users.disable');
-  Route::resource('sessions', 'SessionController');
+    Route::get('home', 'HomeController@index');
+    Route::resource('users', 'UserController');
+    Route::get('users/{user}/password', 'UserController@editPassword')->name('users.password.edit');
+    Route::patch('users/{user}/password', 'UserController@updatePassword')->name('users.password.update');
+    Route::resource('clients', 'ClientController');
+    Route::resource('products', 'ProductController');
 });

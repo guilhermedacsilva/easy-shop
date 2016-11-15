@@ -1,6 +1,6 @@
 <?php
 
-namespace Gym\Http\Controllers;
+namespace EasyShop\Http\Controllers;
 
 use Illuminate\Http\Request;
 

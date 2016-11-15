@@ -1,11 +1,11 @@
 <?php
 
-namespace Gym\Http\Controllers;
+namespace EasyShop\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Gym\Model\User;
-use Gym\Http\Traits\CrudTrait;
+use EasyShop\Model\User;
+use EasyShop\Http\Traits\CrudTrait;
 use Carbon\Carbon;
 use Auth;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Gym\Http\Controllers\Auth;
+namespace EasyShop\Http\Controllers\Auth;
 
-use Gym\Model\User;
-use Gym\Http\Controllers\Controller;
+use EasyShop\Model\User;
+use EasyShop\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 

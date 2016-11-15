@@ -30,7 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'model' => Gym\User::class,
+        'model' => EasyShop\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],

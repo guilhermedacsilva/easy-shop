@@ -1,6 +1,6 @@
 <?php
 
-namespace Gym\Http\Middleware;
+namespace EasyShop\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;

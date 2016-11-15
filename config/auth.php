@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => Gym\Model\User::class,
+            'model' => EasyShop\Model\User::class,
         ],
 
         // 'users' => [

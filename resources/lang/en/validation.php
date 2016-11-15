@@ -2,7 +2,6 @@
 
 return [
 
-
     'time'             => 'The :attribute does not match the format hh:mm.',
 
 

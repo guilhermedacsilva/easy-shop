@@ -1,9 +1,9 @@
 <?php
 
-namespace Gym\Helper;
+namespace EasyShop\Helper;
 
 use Carbon\Carbon;
-use Gym\Helper\GraphColoring;
+use EasyShop\Helper\GraphColoring;
 
 /* Days > Hours */
 class Timetable {

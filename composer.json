@@ -22,7 +22,7 @@
             "database"
         ],
         "psr-4": {
-            "Gym\\": "app/"
+            "EasyShop\\": "app/"
         }
     },
     "autoload-dev": {

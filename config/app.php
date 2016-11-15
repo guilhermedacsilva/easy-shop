@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Gym',
+    'name' => 'EasyShop',
 
     /*
     |--------------------------------------------------------------------------
@@ -172,12 +172,12 @@ return [
         /*
          * Application Service Providers...
          */
-        Gym\Providers\AppServiceProvider::class,
-        Gym\Providers\AuthServiceProvider::class,
-        // Gym\Providers\BroadcastServiceProvider::class,
-        Gym\Providers\EventServiceProvider::class,
-        Gym\Providers\RouteServiceProvider::class,
-        Gym\Providers\CustomValidationServiceProvider::class,
+        EasyShop\Providers\AppServiceProvider::class,
+        EasyShop\Providers\AuthServiceProvider::class,
+        // EasyShop\Providers\BroadcastServiceProvider::class,
+        EasyShop\Providers\EventServiceProvider::class,
+        EasyShop\Providers\RouteServiceProvider::class,
+        EasyShop\Providers\CustomValidationServiceProvider::class,
 
     ],
 

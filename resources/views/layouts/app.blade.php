@@ -55,7 +55,8 @@
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
                             <li><a href="{{ route('users.index') }}">Users</a></li>
-                            <li><a href="{{ route('sessions.index') }}">Schedule</a></li>
+                            <li><a href="{{ route('products.index') }}">Products</a></li>
+                            <li><a href="{{ route('clients.index') }}">Clients</a></li>
 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

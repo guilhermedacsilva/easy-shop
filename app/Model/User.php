@@ -1,6 +1,6 @@
 <?php
 
-namespace Gym\Model;
+namespace EasyShop\Model;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -8,8 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
-    const TYPE_ADMIN = 0;
-    const TYPE_CLIENT = 1;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'type', 'disabled_at', 'note'
+        'name', 'email', 'password'
     ];
 
     /**
@@ -28,10 +26,5 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    public function getTypeString()
-    {
-        return $this->type == self::TYPE_ADMIN ? 'Administrator' : 'Gym client';
-    }
 
 }

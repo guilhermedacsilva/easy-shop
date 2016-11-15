@@ -1,6 +1,6 @@
 <?php
 
-namespace Gym\Exceptions;
+namespace EasyShop\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;

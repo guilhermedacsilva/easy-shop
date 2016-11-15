@@ -12,7 +12,7 @@
 * Purpose : Coloring Connected Graph with a New Approach
 */
 
-namespace Gym\Helper;
+namespace EasyShop\Helper;
 
 class GraphColoring
 {

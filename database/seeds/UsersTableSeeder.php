@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Gym\Model\User;
 
 class UsersTableSeeder extends Seeder
 {
@@ -15,8 +14,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'admin',
             'email' => 'admin@admin.com',
-            'type' => User::TYPE_ADMIN,
-            'password' => bcrypt('123456'),
+            'password' => bcrypt('admin'),
         ]);
     }
 }

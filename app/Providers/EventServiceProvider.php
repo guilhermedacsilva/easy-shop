@@ -1,6 +1,6 @@
 <?php
 
-namespace Gym\Providers;
+namespace EasyShop\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -13,8 +13,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Gym\Events\SomeEvent' => [
-            'Gym\Listeners\EventListener',
+        'EasyShop\Events\SomeEvent' => [
+            'EasyShop\Listeners\EventListener',
         ],
     ];
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Gym\Helper;
+namespace EasyShop\Helper;
 
 use Carbon\Carbon;
 

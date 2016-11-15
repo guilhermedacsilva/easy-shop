@@ -1,6 +1,6 @@
 <?php
 
-namespace Gym\Providers;
+namespace EasyShop\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;

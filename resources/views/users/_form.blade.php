@@ -7,26 +7,10 @@
 
     <div class="col-xs-12">
         <div class="form-group">
-            <strong>Type:</strong>
-            <div class="checkbox">
-                <label>
-                    {!! Form::radio('type', 0, null, ['required'=>'']) !!} Administrator
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    {!! Form::radio('type', 1, true, ['required'=>'']) !!} Gym client
-                </label>
-            </div>
+            <strong>Name:</strong>
+            {!! Form::text('name', null, ['placeholder' => 'Name','class' => 'form-control','required' => '', 'autofocus' => '']) !!}
         </div>
     </div>
-
-        <div class="col-xs-12">
-            <div class="form-group">
-                <strong>Name:</strong>
-                {!! Form::text('name', null, ['placeholder' => 'Name','class' => 'form-control','required' => '', 'autofocus' => '']) !!}
-            </div>
-        </div>
 
     <div class="col-xs-12">
         <div class="form-group">
@@ -50,13 +34,6 @@
         </div>
     </div>
     @endif
-
-    <div class="col-xs-12">
-        <div class="form-group">
-            <strong>Note:</strong>
-            {!! Form::textarea('note', null, ['class' => 'form-control']) !!}
-        </div>
-    </div>
 
     <div class="col-xs-12 text-center">
             <button type="submit" class="btn btn-primary">Submit</button>
