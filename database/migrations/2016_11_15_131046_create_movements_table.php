@@ -19,8 +19,6 @@ class CreateMovementsTable extends Migration
             $table->decimal('total_value', 10, 2);
             $table->tinyInteger('type');
             $table->integer('product_id')->unsigned();
-            $table->foreign('client_id')->references('id')->on('clients');
-            $table->integer('client_id')->unsigned()->nullable();
             $table->foreign('product_id')->references('id')->on('products');
 
             $table->integer('created_by')->unsigned();

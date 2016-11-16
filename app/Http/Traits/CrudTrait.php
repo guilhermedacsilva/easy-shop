@@ -7,17 +7,38 @@ use Illuminate\Http\Request;
 
 trait CrudTrait {
 
-    protected $crudModelName;
-    protected $crudRoutePrefix;
-    protected $crudTitle;
-    protected $crudFullClassName;
-    protected $crudIndexOrderBy = 'name';
-    protected $crudIndexPaginate = 10;
+    /* CAN BE EDITED
+    Used: config('app.name') . "\\{$modelPath}{$modelName}"
+    */
+    protected $modelPath = 'Model\\';
+
+    /* KEYS
+    required: model
+    optionals (calculated): fullClassName (model), routePrefix, viewFolder, title
+        indexOrderBy, indexOrderByAsc, indexPaginate
+    */
+    private $crudTraitParams;
+
+    /* model key is required */
+    protected function setCrudParams($params) {
+        if (!isset($params['model'])) throw new Exception("CrudTrait: Invalid model", 1);
+        if (!isset($params['routePrefix']))
+        $this->crudTraitParams = array_merge([
+            'routePrefix' => '',
+            'viewFolder' => '',
+            'title' => '',
+            'fullClassName' => '',
+            'indexOrderBy' => 'name',
+            'indexOrderByAsc' => 'asc',
+            'indexPaginate' => 10,
+        ], $params);
+
+    }
 
     public function index(Request $request)
     {
         $records = $this->getCrudFullClassName()
-                                ::orderBy($this->crudIndexOrderBy)
+                                ::orderBy($this->crudIndexOrderBy, $this->crudIndexOrderByAsc)
                                 ->paginate($this->crudIndexPaginate);
         return $this->createListView([
             'request' => $request,
@@ -115,7 +136,7 @@ trait CrudTrait {
     protected function createListView($data = []) {
         $data = array_merge([
             'action' => 'index',
-            'includeView' => $this->getCrudRoute('_list'),
+            'includeView' => $this->getCrudView('_list'),
         ], $data);
         return view('layouts.simple_page_pagination', $this->createViewData($data));
     }
@@ -123,7 +144,7 @@ trait CrudTrait {
     protected function createFormView($data = []) {
         $data = array_merge([
             'action' => 'create',
-            'includeView' => $this->getCrudRoute('_form'),
+            'includeView' => $this->getCrudView('_form'),
         ], $data);
         return view('layouts.simple_page', $this->createViewData($data));
     }
@@ -131,7 +152,7 @@ trait CrudTrait {
     protected function createShowView($data = []) {
         $data = array_merge([
             'action' => 'show',
-            'includeView' => $this->getCrudRoute('_show'),
+            'includeView' => $this->getCrudView('_show'),
         ], $data);
         return view('layouts.simple_page', $this->createViewData($data));
     }
@@ -189,6 +210,23 @@ trait CrudTrait {
         return $this->crudRoutePrefix;
     }
 
+    protected function getCrudRoute($suffix) {
+        return $this->getCrudRoutePrefix() . '.' . $suffix;
+    }
+
+    protected function getCrudViewFolder()
+    {
+        if (!$this->crudViewFolder)
+        {
+            $this->crudViewFolder = $this->getCrudRoutePrefix();
+        }
+        return $this->crudViewFolder;
+    }
+
+    protected function getCrudView($suffix) {
+        return $this->getCrudViewFolder() . '.' . $suffix;
+    }
+
     protected function findById($id) {
         return $this->getCrudFullClassName()::find($id);
     }
@@ -200,10 +238,6 @@ trait CrudTrait {
             $this->crudFullClassName = config('app.name').'\\Model\\'.$this->crudModelName;
         }
         return $this->crudFullClassName;
-    }
-
-    protected function getCrudRoute($suffix) {
-        return $this->getCrudRoutePrefix() . '.' . $suffix;
     }
 
 }
