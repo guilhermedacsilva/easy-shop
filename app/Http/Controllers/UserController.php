@@ -5,61 +5,46 @@ namespace EasyShop\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use EasyShop\Model\User;
-use EasyShop\Http\Traits\CrudTrait;
+use EasyShop\Http\Traits\CrudActions;
 use Carbon\Carbon;
 use Auth;
 
 class UserController extends Controller
 {
-    use CrudTrait;
+    use CrudActions;
 
     public function __construct() {
-        $this->crudModelName = 'User';
+        $this->initCrud('User');
     }
 
-    public function store(Request $request)
+    protected function getStoreValidationArray($request)
     {
-        $this->validate($request, [
+        return [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'type' => 'required',
-        ]);
-
-        $this->createUser($request->all());
-
-        return redirect()->route('users.index')
-                        ->with('success','User created successfully');
+        ];
     }
 
-    protected function createUser($data) {
-        User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'type' => $data['type'],
-            'note' => $data['note'],
-        ]);
-    }
-
-    public function update(Request $request, $id)
+    protected function getUpdateValidationArray($request, $record)
     {
-        $user = User::find($id);
-
-        $this->validate($request, [
+        return [
             'name' => 'required|max:255',
             'email' => [
                 'required',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($user->id),
+                Rule::unique('users')->ignore($record->id),
             ],
-            'type' => 'required',
-        ]);
+            'note' => '',
+        ];
+    }
 
-        $user->update($request->only('name','email','type','note'));
-        return redirect()->route('users.index')
-                        ->with('success','User updated successfully');
+    protected function createStoreData($request, $fields)
+    {
+        return array_merge($request->only('name','email','note'),[
+            'password' => bcrypt($request->input('password')),
+        ]);
     }
 
     public function editPassword($id)
@@ -97,16 +82,4 @@ class UserController extends Controller
                         ->with('success','User deleted successfully');
     }
 
-    public function disable($id)
-    {
-        if (Auth::user()->id == $id) {
-            return redirect()->route('users.index')
-                            ->with('danger','You cannot disable yourself.');
-        }
-        $user = User::find($id);
-        $user->disabled_at = $user->disabled_at ? null : Carbon::now();
-        $user->save();
-        return redirect()->route('users.index')
-                        ->with('success','User updated successfully');
-    }
 }

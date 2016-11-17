@@ -5,41 +5,43 @@ namespace EasyShop\Http\Traits;
 use App;
 use Illuminate\Http\Request;
 
-trait CrudTrait {
+trait CrudActions {
 
     /* CAN BE EDITED
-    Used: config('app.name') . "\\{$modelPath}{$modelName}"
+    Used: config('app.name') . "\\{$modelPath}{$model}"
     */
-    protected $modelPath = 'Model\\';
+    private $modelPath = 'Model\\';
 
     /* KEYS
     required: model
-    optionals (calculated): fullClassName (model), routePrefix, viewFolder, title
+    optionals (calculated): fullClassName (model), routePrefix, viewFolder,
+        titleIndex, titleCreate
         indexOrderBy, indexOrderByAsc, indexPaginate
     */
-    private $crudTraitParams;
+    private $params;
 
-    /* model key is required */
-    protected function setCrudParams($params) {
-        if (!isset($params['model'])) throw new Exception("CrudTrait: Invalid model", 1);
-        if (!isset($params['routePrefix']))
-        $this->crudTraitParams = array_merge([
-            'routePrefix' => '',
-            'viewFolder' => '',
-            'title' => '',
-            'fullClassName' => '',
-            'indexOrderBy' => 'name',
-            'indexOrderByAsc' => 'asc',
-            'indexPaginate' => 10,
-        ], $params);
+    /* array('model' => '...') or 'model...' */
+    protected function initCrud($params) {
+        if (is_string($params)) $params = ['model'=>$params];
+        elseif (!isset($params['model'])) throw new Exception("CrudActions: Invalid model", 1);
 
+        $model = $params['model'];
+        $params = array_add($params, 'routePrefix', str_plural(strtolower($model)));
+        $params = array_add($params, 'viewFolder', $params['routePrefix']);
+        $params = array_add($params, 'titleCreate', $model);
+        $params = array_add($params, 'titleIndex', str_plural($params['titleCreate']));
+        $params = array_add($params, 'fullClassName', config('app.name') . "\\{$this->modelPath}{$model}");
+        $params = array_add($params, 'indexOrderBy', 'name');
+        $params = array_add($params, 'indexOrderByAsc', 'asc');
+        $params = array_add($params, 'indexPaginate', 10);
+        $this->params = $params;
     }
 
     public function index(Request $request)
     {
-        $records = $this->getCrudFullClassName()
-                                ::orderBy($this->crudIndexOrderBy, $this->crudIndexOrderByAsc)
-                                ->paginate($this->crudIndexPaginate);
+        $records = $this->params['fullClassName']
+                                ::orderBy($this->params['indexOrderBy'], $this->params['indexOrderByAsc'])
+                                ->paginate($this->params['indexPaginate']);
         return $this->createListView([
             'request' => $request,
             'records' => $records,
@@ -57,11 +59,11 @@ trait CrudTrait {
         $this->validate($request, $validationArray);
 
         $fields = array_keys($validationArray);
-        $data = $this->createStoreData($request->only($fields));
-        $this->getCrudFullClassName()::create($data);
+        $data = $this->createStoreData($request, $fields);
+        ($this->params['fullClassName'])::create($data);
 
         return redirect()->route($this->getCrudRoute('index'))
-                        ->with('success', $this->crudModelName.' created successfully');
+                        ->with('success', $this->params['model'].' created successfully');
     }
 
     public function edit($id)
@@ -74,16 +76,16 @@ trait CrudTrait {
 
     public function update(Request $request, $id)
     {
-        $validationArray = $this->getUpdateValidationArray($request, $id);
+        $record = $this->findById($id);
+        $validationArray = $this->getUpdateValidationArray($request, $record);
         $this->validate($request, $validationArray);
 
         $fields = array_keys($validationArray);
-        $record = $this->getCrudFullClassName()::find($id);
-        $data = $this->createUpdateData($request->only($fields), $record);
+        $data = $this->createUpdateData($request, $fields, $record);
         $record->update($data);
 
         return redirect()->route($this->getCrudRoute('index'))
-                        ->with('success', $this->crudModelName.' updated successfully');
+                        ->with('success', $this->params['model'].' updated successfully');
     }
 
     public function show($id)
@@ -95,9 +97,9 @@ trait CrudTrait {
 
     public function destroy($id)
     {
-        $this->getCrudFullClassName()::destroy($id);
+        ($this->params['fullClassName'])::destroy($id);
         return redirect()->route($this->getCrudRoute('index'))
-                        ->with('success',$this->crudModelName.' deleted successfully');
+                        ->with('success',$this->params['model'].' deleted successfully');
     }
 
 
@@ -109,7 +111,7 @@ trait CrudTrait {
     {
         return $this->getDefaultValidationArray($request);
     }
-    protected function getUpdateValidationArray($request, $id)
+    protected function getUpdateValidationArray($request, $record)
     {
         return $this->getDefaultValidationArray($request);
     }
@@ -120,13 +122,13 @@ trait CrudTrait {
         ];
     }
 
-    protected function createStoreData($data)
+    protected function createStoreData($request, $fields)
     {
-        return $data;
+        return $request->only($fields);
     }
-    protected function createUpdateData($data, $record)
+    protected function createUpdateData($request, $fields, $record)
     {
-        return $data;
+        return $request->only($fields);
     }
 
     protected function createView($data) {
@@ -162,13 +164,13 @@ trait CrudTrait {
     */
     protected function createViewData($data = []) {
         $data['action'] = isset($data['action']) ? $data['action'] : 'index';
-        $data['routePrefix'] = $this->getCrudRoutePrefix();
+        $data['routePrefix'] = $this->params['routePrefix'];
 
         if ($data['action'] == 'index') {
             $data['topButtonRoute'] = $this->getCrudRoute('create');
             $data['topButtonText'] = 'Create New';
             $data['i'] = isset($data['request']) ?
-                ($data['request']->input('page', 1) - 1) * $this->crudIndexPaginate : null;
+                ($data['request']->input('page', 1) - 1) * $this->params['indexPaginate'] : null;
         } else {
             $data['topButtonRoute'] = $this->getCrudRoute('index');
             $data['topButtonText'] = 'Back';
@@ -176,68 +178,32 @@ trait CrudTrait {
 
         if (!isset($data['title'])) {
             if ($data['action'] == 'index') {
-                $data['title'] = $this->getCrudTitle();
+                $data['title'] = $this->params['titleIndex'];
 
             } elseif ($data['action'] == 'create') {
-                $data['title'] = 'Create New ' . $this->crudModelName;
+                $data['title'] = 'Create New ' . $this->params['titleCreate'];
 
             } elseif ($data['action'] == 'edit') {
-                $data['title'] = 'Edit ' . $this->crudModelName;
+                $data['title'] = 'Edit ' . $this->params['titleCreate'];
 
             } else {
-                $data['title'] = $this->crudModelName;
+                $data['title'] = $this->params['model'];
             }
         }
 
         return $data;
     }
 
-    protected function getCrudTitle()
-    {
-        if (!$this->crudTitle)
-        {
-            $this->crudTitle = str_plural($this->crudModelName);
-        }
-        return $this->crudTitle;
-    }
-
-    protected function getCrudRoutePrefix()
-    {
-        if (!$this->crudRoutePrefix)
-        {
-            $this->crudRoutePrefix = str_plural(strtolower($this->crudModelName));
-        }
-        return $this->crudRoutePrefix;
-    }
-
     protected function getCrudRoute($suffix) {
-        return $this->getCrudRoutePrefix() . '.' . $suffix;
-    }
-
-    protected function getCrudViewFolder()
-    {
-        if (!$this->crudViewFolder)
-        {
-            $this->crudViewFolder = $this->getCrudRoutePrefix();
-        }
-        return $this->crudViewFolder;
+        return $this->params['routePrefix'] . '.' . $suffix;
     }
 
     protected function getCrudView($suffix) {
-        return $this->getCrudViewFolder() . '.' . $suffix;
+        return $this->params['viewFolder'] . '.' . $suffix;
     }
 
     protected function findById($id) {
-        return $this->getCrudFullClassName()::find($id);
-    }
-
-    protected function getCrudFullClassName()
-    {
-        if (!$this->crudFullClassName)
-        {
-            $this->crudFullClassName = config('app.name').'\\Model\\'.$this->crudModelName;
-        }
-        return $this->crudFullClassName;
+        return ($this->params['fullClassName'])::find($id);
     }
 
 }

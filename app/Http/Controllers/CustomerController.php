@@ -3,15 +3,15 @@
 namespace EasyShop\Http\Controllers;
 
 use Illuminate\Http\Request;
-use EasyShop\Http\Traits\CrudTrait;
+use EasyShop\Http\Traits\CrudActions;
 use EasyShop\Model\Customer;
 
 class CustomerController extends Controller
 {
-    use CrudTrait;
+    use CrudActions;
 
     public function __construct() {
-        $this->crudModelName = 'Customer';
+        $this->initCrud('Customer');
     }
 
 }

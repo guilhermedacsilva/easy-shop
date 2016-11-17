@@ -3,16 +3,16 @@
 namespace EasyShop\Http\Controllers;
 
 use Illuminate\Http\Request;
-use EasyShop\Http\Traits\CrudTrait;
+use EasyShop\Http\Traits\CrudActions;
 use EasyShop\Model\Product;
 use Auth;
 
 class ProductController extends Controller
 {
-    use CrudTrait;
+    use CrudActions;
 
     public function __construct() {
-        $this->crudModelName = 'Product';
+        $this->initCrud('Product');
     }
 
     protected function getDefaultValidationArray($request)
@@ -23,16 +23,16 @@ class ProductController extends Controller
         ];
     }
 
-    protected function createStoreData($data)
+    protected function createStoreData($request, $fields)
     {
-        return array_merge($data, [
+        return array_merge($request->only($fields), [
             'created_by' => Auth::user()->id,
         ]);
     }
 
-    protected function createUpdateData($data, $record)
+    protected function createUpdateData($request, $fields, $record)
     {
-        return array_merge($data, [
+        return array_merge($request->only($fields), [
             'updated_by' => Auth::user()->id,
         ]);
     }

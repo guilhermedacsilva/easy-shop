@@ -23,12 +23,17 @@
         </div>
     </div>
 
+
     <div class="col-xs-12">
         <div class="form-group">
-            <strong>Updated by:</strong>
-            {{ $record->updated_by_user->name }}
-            <strong> at: </strong>
-            {{ $record->updated_at->format(trans('misc.timestamp_format')) }}
+            @if($record->updated_at != null)
+                <strong>Updated by:</strong>
+                {{ $record->updated_by_user->name }}
+                <strong> at: </strong>
+                {{ $record->updated_at->format(trans('misc.timestamp_format')) }}
+            @else
+                <strong>Never updated.</strong>
+            @endif
         </div>
     </div>
 
