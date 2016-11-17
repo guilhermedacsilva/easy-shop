@@ -17,6 +17,13 @@ class CustomValidationServiceProvider extends ServiceProvider
         Validator::extend('time', function($attribute, $value, $parameters, $validator) {
             return date_parse_from_format('H:i', $value)['error_count'] == 0;
         });
+        /*
+        $parameters[0] = 'ModelName'
+        How to use: 'id:ModelName'
+        */
+        Validator::extend('id', function($attribute, $value, $parameters, $validator) {
+            return (config('app.name')."\Model\\$parameters[0]")::where('id','=',$value)->exists();
+        });
     }
 
     /**

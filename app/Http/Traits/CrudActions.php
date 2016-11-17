@@ -60,7 +60,10 @@ trait CrudActions {
 
         $fields = array_keys($validationArray);
         $data = $this->createStoreData($request, $fields);
-        ($this->params['fullClassName'])::create($data);
+
+        $this->beforeStore($request, $data);
+        $newRecord = ($this->params['fullClassName'])::create($data);
+        $this->afterStore($request, $newRecord);
 
         return redirect()->route($this->getCrudRoute('index'))
                         ->with('success', $this->params['model'].' created successfully');
@@ -82,7 +85,10 @@ trait CrudActions {
 
         $fields = array_keys($validationArray);
         $data = $this->createUpdateData($request, $fields, $record);
+
+        $this->beforeUpdate($request, $record, $data);
         $record->update($data);
+        $this->afterStore($request, $record);
 
         return redirect()->route($this->getCrudRoute('index'))
                         ->with('success', $this->params['model'].' updated successfully');
@@ -97,7 +103,9 @@ trait CrudActions {
 
     public function destroy($id)
     {
+        $this->beforeDestroy($id);
         ($this->params['fullClassName'])::destroy($id);
+        $this->afterDestroy($id);
         return redirect()->route($this->getCrudRoute('index'))
                         ->with('success',$this->params['model'].' deleted successfully');
     }
@@ -130,6 +138,14 @@ trait CrudActions {
     {
         return $request->only($fields);
     }
+    protected function beforeStore($request, $data) {}
+    protected function afterStore($request, $record) {}
+
+    protected function beforeUpdate($request, $oldRecord, $newData) {}
+    protected function afterUpdate($request, $newRecord) {}
+
+    protected function beforeDestroy($id) {}
+    protected function afterDestroy($id) {}
 
     protected function createView($data) {
         return view($data['layout'], $this->createViewData($data));
@@ -191,6 +207,11 @@ trait CrudActions {
             }
         }
 
+        return $this->changeViewData($data);
+    }
+
+    protected function changeViewData($data)
+    {
         return $data;
     }
 

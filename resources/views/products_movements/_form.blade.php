@@ -9,14 +9,19 @@
     <div class="col-xs-12">
         <div class="form-group">
             <strong>Type:</strong>
-            {!! Form::text('type', null, ['placeholder' => 'Type','class' => 'form-control','required' => '']) !!}
+            <label class="checkbox-inline">
+                {!! Form::radio('type', \EasyShop\Model\ProductsMovement::TYPE_INPUT, null, ['required'=>'']) !!} Input
+            </label>
+            <label class="checkbox-inline">
+                {!! Form::radio('type', \EasyShop\Model\ProductsMovement::TYPE_OUTPUT, null, ['required'=>'']) !!} Output
+            </label>
         </div>
     </div>
 
     <div class="col-xs-12">
         <div class="form-group">
             <strong>Product:</strong>
-            {!! Form::text('product', null, ['placeholder' => 'Product','class' => 'form-control','required' => '']) !!}
+            {!! Form::select('product_id', $products, null, ['class' => 'form-control','required' => '']) !!}
         </div>
     </div>
 

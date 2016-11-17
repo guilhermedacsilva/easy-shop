@@ -3,6 +3,7 @@
 return [
 
     'time'             => 'The :attribute does not match the format hh:mm.',
+    'id'             => ':Attribute invalid.',
 
 
     /*
@@ -116,6 +117,7 @@ return [
     */
 
     'attributes' => [
+        'product_id' => 'product',
         'start_at_date' => 'starting date',
         'start_at_time' => 'starting time',
         'end_at_time' => 'ending time',
