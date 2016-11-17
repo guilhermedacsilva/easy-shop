@@ -66,7 +66,7 @@ trait CrudActions {
         $this->afterStore($request, $newRecord);
 
         return redirect()->route($this->getCrudRoute('index'))
-                        ->with('success', $this->params['model'].' created successfully');
+                        ->with('success', $this->params['titleCreate'].' created successfully');
     }
 
     public function edit($id)
@@ -91,7 +91,7 @@ trait CrudActions {
         $this->afterStore($request, $record);
 
         return redirect()->route($this->getCrudRoute('index'))
-                        ->with('success', $this->params['model'].' updated successfully');
+                        ->with('success', $this->params['titleCreate'].' updated successfully');
     }
 
     public function show($id)
@@ -107,7 +107,7 @@ trait CrudActions {
         ($this->params['fullClassName'])::destroy($id);
         $this->afterDestroy($id);
         return redirect()->route($this->getCrudRoute('index'))
-                        ->with('success',$this->params['model'].' deleted successfully');
+                        ->with('success',$this->params['titleCreate'].' deleted successfully');
     }
 
 

@@ -25,4 +25,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('customers', 'CustomerController');
     Route::resource('products', 'ProductController');
     Route::resource('movements', 'ProductsMovementController');
+
+    Route::get('reports.stock', 'UserController@editPassword');
 });
