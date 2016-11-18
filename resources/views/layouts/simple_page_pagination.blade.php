@@ -8,6 +8,6 @@
 
     @include($includeView)
 
-    @include('pagination.default')
+    @include('pagination.with_limit')
 
 @endsection

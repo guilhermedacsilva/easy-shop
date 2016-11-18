@@ -3,10 +3,15 @@ h2 {
 }
 
 @media print {
-    .container-print {
+    .container-fluid-print {
         width: auto;
     }
 }
+
+.margin-left { margin-left: 10px; }
+.margin-right { margin-right: 10px; }
+.margin-top { margin-top: 10px; }
+.margin-bottom { margin-bottom: 10px; }
 
 .alert-compact {
   padding: 0 4px;

@@ -29,4 +29,5 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('reports/stock', 'ReportController@stock')->name('reports.stock');
     Route::get('reports/stock/quantity', 'Report\\Stock\\QuantityController@index')->name('reports.stock.quantity');
     Route::get('reports/stock/input', 'Report\\Stock\\InputController@index')->name('reports.stock.input');
+    Route::post('reports/stock/input', 'Report\\Stock\\InputController@filter')->name('reports.stock.input');
 });

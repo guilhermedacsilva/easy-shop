@@ -106,7 +106,7 @@
             </div>
         </nav>
 
-        <div class="container container-print">
+        <div class="container container-fluid-print">
             @yield('content')
         </div>
     </div>
