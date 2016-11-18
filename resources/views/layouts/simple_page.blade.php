@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('partials.crud.top')
+    @include('partials.generic.top')
 
     @include('partials.alerts.all')
 

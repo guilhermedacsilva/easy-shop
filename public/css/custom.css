@@ -1,6 +1,13 @@
 h2 {
   margin-top: 0;
 }
+
+@media print {
+    .container-print {
+        width: auto;
+    }
+}
+
 .alert-compact {
   padding: 0 4px;
   margin-bottom: 5px;

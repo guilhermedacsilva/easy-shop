@@ -57,15 +57,6 @@
 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    Reports <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    
-                                </ul>
-                            </li>
-
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     People <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
@@ -81,6 +72,7 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="{{ route('products.index') }}">Products</a></li>
                                     <li><a href="{{ route('movements.index') }}">Movements</a></li>
+                                    <li><a href="{{ route('reports.stock') }}">Reports</a></li>
                                 </ul>
                             </li>
 
@@ -114,7 +106,7 @@
             </div>
         </nav>
 
-        <div class="container">
+        <div class="container container-print">
             @yield('content')
         </div>
     </div>

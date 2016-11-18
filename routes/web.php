@@ -26,5 +26,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('products', 'ProductController');
     Route::resource('movements', 'ProductsMovementController');
 
-    Route::get('reports.stock', 'UserController@editPassword');
+    Route::get('reports/stock', 'ReportController@stock')->name('reports.stock');
+    Route::get('reports/stock/quantity', 'Report\\Stock\\QuantityController@index')->name('reports.stock.quantity');
+    Route::get('reports/stock/input', 'Report\\Stock\\InputController@index')->name('reports.stock.input');
 });
