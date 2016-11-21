@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table table-bordered table-condensed table-th-center">
 @if ($records->isEmpty())
     <tr>
         <td class="text-center">
@@ -23,8 +23,8 @@
             <td>{{ $record->created_at->format(trans('misc.timestamp_format')) }}</td>
             <td>{{ $record->getType() }}</td>
             <td>{{ $record->product->name }}</td>
-            <td>{{ $record->quantity }}</td>
-            <td>{{ $record->total_value }}</td>
+            <td class="text-right">{{ $record->quantity }}</td>
+            <td class="text-right">{{ $record->total_value }}</td>
         </tr>
     @endforeach
 @endif

@@ -1,7 +1,7 @@
-<table class="table table-bordered table-condensed">
+<table class="table table-bordered table-condensed table-th-center">
     <tr>
-        <th class="text-center">Name</th>
-        <th width="200px" class="text-center">Quantity</th>
+        <th>Name</th>
+        <th width="200px">Quantity</th>
     </tr>
 @foreach ($records as $record)
     <tr>

@@ -154,7 +154,7 @@ trait CrudActions {
     protected function createListView($data = []) {
         $data = array_merge([
             'action' => 'index',
-            'includeView' => $this->getCrudView('_list'),
+            'includeView' => $this->getCrudView('list'),
         ], $data);
         return view('layouts.simple_page_pagination', $this->createViewData($data));
     }
@@ -162,7 +162,7 @@ trait CrudActions {
     protected function createFormView($data = []) {
         $data = array_merge([
             'action' => 'create',
-            'includeView' => $this->getCrudView('_form'),
+            'includeView' => $this->getCrudView('form'),
         ], $data);
         return view('layouts.simple_page', $this->createViewData($data));
     }
@@ -170,7 +170,7 @@ trait CrudActions {
     protected function createShowView($data = []) {
         $data = array_merge([
             'action' => 'show',
-            'includeView' => $this->getCrudView('_show'),
+            'includeView' => $this->getCrudView('show'),
         ], $data);
         return view('layouts.simple_page', $this->createViewData($data));
     }

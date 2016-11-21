@@ -2,6 +2,10 @@ h2 {
   margin-top: 0;
 }
 
+.table-th-center th {
+  text-align: center;
+}
+
 @media print {
     .container-fluid-print {
         width: auto;

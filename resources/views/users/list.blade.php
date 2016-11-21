@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table table-bordered table-condensed table-th-center">
     <tr>
         <th width="130px"></th>
         <th>Name</th>

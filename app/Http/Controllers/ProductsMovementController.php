@@ -81,7 +81,7 @@ class ProductsMovementController extends Controller
         return array_merge($data, [
             'typeInput' => ProductsMovement::TYPE_INPUT,
             'typeOutput' => ProductsMovement::TYPE_OUTPUT,
-            'products' => array_add(Product::all()->pluck('name', 'id'), 9878, 'Fake'),
+            'products' => Product::all()->pluck('name', 'id'),
         ]);
     }
 

@@ -50,7 +50,7 @@ class UserController extends Controller
     public function editPassword($id)
     {
         return view('layouts.simple_page', $this->createViewData([
-            'includeView' => $this->getCrudRoute('_form_password'),
+            'includeView' => $this->getCrudRoute('form_password'),
             'action' => 'edit',
             'record' => User::find($id),
         ]));

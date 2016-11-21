@@ -20,11 +20,11 @@
     <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
 </a>
 
-<table class="table table-bordered table-condensed">
+<table class="table table-bordered table-condensed table-th-center">
     <tr>
-        <th class="text-center">Name</th>
-        <th width="200px" class="text-center">Input Quantity</th>
-        <th width="200px" class="text-center">Total Value</th>
+        <th>Name</th>
+        <th width="200px">Input Quantity</th>
+        <th width="200px">Total Value</th>
     </tr>
 @foreach ($records as $record)
     <tr>
