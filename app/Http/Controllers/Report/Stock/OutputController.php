@@ -9,7 +9,7 @@ use DB;
 use Carbon\Carbon;
 use EasyShop\Helper\MyDB;
 
-class InputController extends Controller
+class OutputController extends Controller
 {
     public function index()
     {
@@ -38,7 +38,7 @@ class InputController extends Controller
     select name, sum(m.quantity) as quantity, sum(m.total_value) as total_value
     from products p
     join products_movements m on (m.product_id = p.id)
-    where m.type = 0 and m.created_at between ? and ?
+    where m.type = 1 and m.created_at between ? and ?
     group by p.id, p.name
     order by p.name
 EOD;
@@ -46,8 +46,8 @@ EOD;
         $params = [
             'topButtonRoute' => 'reports.stock',
             'topButtonText' => 'Back',
-            'includeView' => 'reports.stock.input',
-            'title' => 'Reports / Stock / Input of Products',
+            'includeView' => 'reports.stock.output',
+            'title' => 'Reports / Stock / Output of Products',
             'records' => $records,
             'filter' => $queryParams,
         ];

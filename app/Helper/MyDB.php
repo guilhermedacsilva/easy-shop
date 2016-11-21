@@ -30,11 +30,12 @@ class MyDB {
 
     /* keys: 'start_at', 'end_at'
     */
-    public static function formatTimestamps($dates)
+    public static function filterDateToQueryParams($dates)
     {
-        if (isset($dates['start_at'])) $dates['start_at'] = self::formatStartTimestamp($dates['start_at']);
-        if (isset($dates['end_at'])) $dates['end_at'] = self::formatEndTimestamp($dates['end_at']);
-        return $dates;
+        $queryParams = [];
+        if (isset($dates['start_at'])) $queryParams[] = self::formatStartTimestamp($dates['start_at']);
+        if (isset($dates['end_at'])) $queryParams[] = self::formatEndTimestamp($dates['end_at']);
+        return $queryParams;
     }
 
 }

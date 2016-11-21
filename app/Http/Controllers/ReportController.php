@@ -9,7 +9,7 @@ class ReportController extends Controller
     public function stock()
     {
         $params = [
-            'includeView' => 'reports._stock',
+            'includeView' => 'reports.stock.index',
             'notIncludeTopButton' => true,
             'title' => 'Reports / Stock',
         ];
