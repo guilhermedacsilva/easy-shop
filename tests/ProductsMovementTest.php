@@ -4,45 +4,61 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use EasyShop\Model\User;
+use EasyShop\Model\ProductsMovement;
+use DB;
 
-class ProductTest extends TestCase
+class ProductsMovementTest extends TestCase
 {
     use WithoutMiddleware;
     use DatabaseTransactions;
 
     public function testIndex()
     {
-        $this->visit('/products')
-            ->seeInElement('td','Broom');
+        DB::table('products_movements')->delete();
+
+        $movement = ProductsMovement::create([
+            'quantity' => 23.23,
+            'total_value' => 34.34,
+            'type' => ProductsMovement::TYPE_INPUT,
+            'product_id' => 1,
+            'created_by' => 1,
+        ]);
+
+        $this->visit('/movements')
+            ->see('Movements');
     }
 
     public function testCreate()
     {
-        $this->actingAs(User::find(1))
-            ->visit('/products/create')
-            ->type('Table', 'name')
-            ->type('8', 'quantity')
-            ->press('Submit')
-            ->seePageIs('/products')
-            ->seeInElement('td','Table')
-            ->seeInElement('td','8');
-    }
+        DB::table('products_movements')->delete();
 
+        $this->actingAs(User::find(1))
+            ->visit('/movements/create')
+            ->type('333.33', 'quantity')
+            ->type('22.22', 'total_value')
+            ->type(ProductsMovement::TYPE_INPUT, 'type')
+            ->press('Submit')
+            ->seePageIs('/movements')
+            ->seeInElement('td','333.33')
+            ->seeInElement('td','22.22')
+            ->seeInElement('td','Input');
+    }
+/*
     public function testStore()
     {
         $this->actingAs(User::find(1))
-             ->post('/products', [
+             ->post('/movements', [
                 'name' => 'Mouse',
                 'quantity' => 6,
-        ])->assertRedirectedTo('/products')
-            ->visit('/products')
+        ])->assertRedirectedTo('/movements')
+            ->visit('/movements')
             ->seeInElement('td','Mouse')
             ->seeInElement('td','6');
     }
 
     public function testShow()
     {
-        $response = $this->call('get', '/products/1');
+        $response = $this->call('get', '/movements/1');
 
         $this->see('Broom')
             ->see('10.00')
@@ -55,11 +71,11 @@ class ProductTest extends TestCase
     public function testEdit()
     {
         $this->actingAs(User::find(1))
-            ->visit('/products/1/edit')
+            ->visit('/movements/1/edit')
             ->type('Notebook', 'name')
             ->type('12.34', 'quantity')
             ->press('Submit')
-            ->seePageIs('/products')
+            ->seePageIs('/movements')
             ->seeInElement('td','Notebook')
             ->seeInElement('td','12.34');
     }
@@ -67,12 +83,12 @@ class ProductTest extends TestCase
     public function testUpdate()
     {
         $this->actingAs(User::find(1))
-            ->patch('/products/1', [
+            ->patch('/movements/1', [
                 'name' => 'Brick',
                 'quantity' => '123.45',
-        ])  ->assertRedirectedTo('/products');
+        ])  ->assertRedirectedTo('/movements');
 
-        $response = $this->call('get', '/products/1');
+        $response = $this->call('get', '/movements/1');
 
         $this->see('Brick')
             ->see('123.45');
@@ -88,13 +104,13 @@ class ProductTest extends TestCase
         $product = factory(EasyShop\Model\Product::class)->make();
         $this->assertTrue($product->save());
 
-        $this->visit('products')
+        $this->visit('movements')
             ->seeInElement('td', $product->name)
-            ->delete('products/' . $product->id, [
+            ->delete('movements/' . $product->id, [
                 '_token' => csrf_token()
             ])
-            ->visit('/products')
+            ->visit('/movements')
             ->dontSeeInElement('td', $product->name);
     }
-
+*/
 }

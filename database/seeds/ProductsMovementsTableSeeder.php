@@ -13,7 +13,7 @@ class ProductsMovementsTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 2; $i++) {
             DB::table('products_movements')->insert([
                 'type' => ProductsMovement::TYPE_INPUT,
                 'quantity' => 2,
@@ -31,7 +31,7 @@ class ProductsMovementsTableSeeder extends Seeder
                 'created_at' => Carbon::createFromDate(2016, 1, $i),
             ]);
         }
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 2; $i++) {
             DB::table('products_movements')->insert([
                 'type' => ProductsMovement::TYPE_INPUT,
                 'quantity' => 10,
