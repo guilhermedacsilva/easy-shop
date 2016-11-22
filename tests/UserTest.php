@@ -7,17 +7,97 @@ use EasyShop\Model\User;
 
 class UserTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testExample()
+    use WithoutMiddleware;
+    use DatabaseTransactions;
+
+    public function testIndex()
+    {
+        $this->visit('/users')
+            ->seeInElement('td','admin@admin.com');
+    }
+
+    public function testCreate()
+    {
+        $this->visit('/users/create')
+            ->type('John', 'name')
+            ->type('john@john.com', 'email')
+            ->type('1234567890', 'password')
+            ->type('1234567890', 'password_confirmation')
+            ->press('Submit')
+            ->seePageIs('/users')
+            ->seeInElement('td','john@john.com');
+    }
+
+    public function testStore()
+    {
+        $this->post('/users', [
+            'name' => 'Peter',
+            'email' => 'peter@peter.com',
+            'password' => '1234567890',
+            'password_confirmation' => '1234567890',
+        ])  ->assertRedirectedTo('/users')
+            ->visit('/users')
+            ->seeInElement('td','peter@peter.com');
+    }
+
+    public function testShow()
+    {
+        $this->visit('/users/1')
+            ->seeInElement('.form-group','admin@admin.com');
+    }
+
+    public function testEdit()
+    {
+        $this->visit('/users/1/edit')
+            ->type('Sam', 'name')
+            ->type('sam@sam.com', 'email')
+            ->press('Submit')
+            ->seePageIs('/users')
+            ->seeInElement('td','Sam')
+            ->seeInElement('td','sam@sam.com');
+    }
+
+    public function testUpdate()
+    {
+        $this->patch('/users/1', [
+            'name' => 'Peter',
+            'email' => 'peter@peter.com',
+        ])  ->assertRedirectedTo('/users')
+            ->visit('/users')
+            ->seeInElement('td','peter@peter.com');
+    }
+
+    public function testDestroy()
     {
         $this->actingAs(User::find(1))
-            ->visit('/')
-            ->see('You are logged in!');
+            ->visit('/users')
+            ->seeInElement('td', 'guy@guy.com')
+            ->delete('/users/2')
+            ->assertRedirectedTo('/users')
+            ->visit('/users')
+            ->dontSeeInElement('td','guy@guy.com');
+    }
 
-        
+    public function testEditPassword()
+    {
+        $this->visit('/users/1/password')
+            ->seeInElement('.form-group', 'admin@admin.com')
+            ->type('abcdef', 'password')
+            ->type('abcdef', 'password_confirmation')
+            ->press('Submit')
+            ->seePageIs('/users');
+
+        $this->assertTrue(password_verify('abcdef', User::find(1)->password));
+    }
+
+    public function testUpdatePassword()
+    {
+        $this->patch('/users/1/password', [
+            'password' => 'abcdef',
+            'password_confirmation' => 'abcdef',
+        ])  ->assertRedirectedTo('/users')
+            ->visit('/users');
+
+        $this->assertTrue(password_verify('abcdef', User::find(1)->password));
     }
 }

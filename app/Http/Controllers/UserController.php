@@ -20,7 +20,7 @@ class UserController extends Controller
     protected function getStoreValidationArray($request)
     {
         return [
-            'name' => 'required|max:255',
+            'name' => 'required|between:1,255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ];
@@ -29,7 +29,7 @@ class UserController extends Controller
     protected function getUpdateValidationArray($request, $record)
     {
         return [
-            'name' => 'required|max:255',
+            'name' => 'required|between:1,255',
             'email' => [
                 'required',
                 'email',

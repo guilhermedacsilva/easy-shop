@@ -3,7 +3,7 @@ Laravel (PHP7) web application for small retail companies.
 # Prerequisites
 
 - composer (https://getcomposer.org)
-- a web server (I recommend Apache)
+- a web server (Apache or Nginx)
 - PHP (v7)
 - a database
 
@@ -16,6 +16,7 @@ Open a terminal and go to the project folder. Run:
 - composer install
 - php artisan key:generate
 - php artisan migrate --seed
+
 Configure your web server. Create a virtual host and point it to the public folder of the application (some path/easy-shop/public). Then you need to configure your OS to redirect the domain name to the localhost.
 You can login with user "admin@admin.com" and password "admin".
 
