@@ -178,6 +178,7 @@ return [
         EasyShop\Providers\EventServiceProvider::class,
         EasyShop\Providers\RouteServiceProvider::class,
         EasyShop\Providers\CustomValidationServiceProvider::class,
+        EasyShop\Providers\DatabaseEventServiceProvider::class,
 
     ],
 

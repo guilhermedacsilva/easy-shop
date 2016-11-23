@@ -28,18 +28,6 @@ class UserTest extends TestCase
             ->seeInElement('td','john@john.com');
     }
 
-    public function testStore()
-    {
-        $this->post('/users', [
-            'name' => 'Peter',
-            'email' => 'peter@peter.com',
-            'password' => '1234567890',
-            'password_confirmation' => '1234567890',
-        ])  ->assertRedirectedTo('/users')
-            ->visit('/users')
-            ->seeInElement('td','peter@peter.com');
-    }
-
     public function testShow()
     {
         $this->visit('/users/1')
@@ -55,16 +43,6 @@ class UserTest extends TestCase
             ->seePageIs('/users')
             ->seeInElement('td','Sam')
             ->seeInElement('td','sam@sam.com');
-    }
-
-    public function testUpdate()
-    {
-        $this->patch('/users/1', [
-            'name' => 'Peter',
-            'email' => 'peter@peter.com',
-        ])  ->assertRedirectedTo('/users')
-            ->visit('/users')
-            ->seeInElement('td','peter@peter.com');
     }
 
     public function testDestroy()
@@ -86,17 +64,6 @@ class UserTest extends TestCase
             ->type('abcdef', 'password_confirmation')
             ->press('Submit')
             ->seePageIs('/users');
-
-        $this->assertTrue(password_verify('abcdef', User::find(1)->password));
-    }
-
-    public function testUpdatePassword()
-    {
-        $this->patch('/users/1/password', [
-            'password' => 'abcdef',
-            'password_confirmation' => 'abcdef',
-        ])  ->assertRedirectedTo('/users')
-            ->visit('/users');
 
         $this->assertTrue(password_verify('abcdef', User::find(1)->password));
     }

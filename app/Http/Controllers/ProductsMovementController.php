@@ -32,28 +32,7 @@ class ProductsMovementController extends Controller
             'total_value' => 'required|numeric|min:0',
         ];
     }
-
-    protected function createStoreData($request, $fields)
-    {
-        return array_merge($request->only($fields), [
-            'created_by' => Auth::user()->id,
-        ]);
-    }
-
-    protected function afterStore($request, $record)
-    {
-        $product = Product::find($request->input('product_id'));
-        $product->addMovement($record);
-        $product->save();
-    }
-
-    protected function createUpdateData($request, $fields, $record)
-    {
-        return array_merge($request->only($fields), [
-            'updated_by' => Auth::user()->id,
-        ]);
-    }
-
+/*
     protected function beforeUpdate($request, $oldMovement, $data)
     {
         $product = $oldMovement->product;
@@ -75,13 +54,13 @@ class ProductsMovementController extends Controller
         $product->subMovement($movement);
         $product->save();
     }
-
+*/
     protected function changeViewData($data)
     {
         return array_merge($data, [
             'typeInput' => ProductsMovement::TYPE_INPUT,
             'typeOutput' => ProductsMovement::TYPE_OUTPUT,
-            'products' => Product::all()->pluck('name', 'id'),
+            'products' => Product::all()->pluck('name', 'id')->prepend('---', '0'),
         ]);
     }
 

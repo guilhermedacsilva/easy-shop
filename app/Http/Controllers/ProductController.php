@@ -22,19 +22,4 @@ class ProductController extends Controller
             'quantity' => 'required|numeric',
         ];
     }
-
-    protected function createStoreData($request, $fields)
-    {
-        return array_merge($request->only($fields), [
-            'created_by' => Auth::user()->id,
-        ]);
-    }
-
-    protected function createUpdateData($request, $fields, $record)
-    {
-        return array_merge($request->only($fields), [
-            'updated_by' => Auth::user()->id,
-        ]);
-    }
-
 }
