@@ -28,7 +28,11 @@ class ProductsMovementTest extends TestCase
             'product_id' => $product->id
         ]);
         $this->assertEquals($oldQuantity + $movement->quantity, $product->fresh()->quantity);
-        $movement->update();
+
+        $movement->quantity += 10;
+        $movement->save();
+        $this->assertEquals($oldQuantity + $movement->quantity, $product->fresh()->quantity);
+
         $movement->delete();
         $this->assertEquals($oldQuantity, $product->fresh()->quantity);
     }
@@ -125,4 +129,5 @@ class ProductsMovementTest extends TestCase
         $product = $product->fresh();
         $this->assertEquals($oldQuantity, $product->quantity);
     }
+
 }
