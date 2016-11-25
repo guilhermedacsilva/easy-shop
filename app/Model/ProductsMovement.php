@@ -27,7 +27,12 @@ class ProductsMovement extends Model
 
     public function getType()
     {
-        return $this->type == self::TYPE_INPUT ? 'Input' : 'Output';
+        return self::getStringType($this->type);
+    }
+
+    public static function getStringType($typeInt)
+    {
+        return $typeInt == self::TYPE_INPUT ? 'Input' : 'Output';
     }
 
     public function isInput()

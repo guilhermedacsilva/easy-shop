@@ -35,14 +35,13 @@ class ProductTest extends TestCase
 
     public function testShow()
     {
-        $response = $this->call('get', '/products/1');
-
-        $this->see('Broom')
+        $this->visit('/products/1')
+            ->see('Broom')
             ->see('10.00')
             ->see('Never updated.');
 
         $pattern = '/<strong>Created by:<\/strong>\s+Admin/';
-        $this->assertRegExp($pattern, $response->content());
+        $this->assertRegExp($pattern, $this->response->content());
     }
 
     public function testEdit()
@@ -53,11 +52,12 @@ class ProductTest extends TestCase
             ->press('Submit')
             ->seePageIs('/products')
             ->seeInElement('td','Notebook')
-            ->seeInElement('td','12.34');
+            ->seeInElement('td','12.34')
+            ->visit('/products/1');
 
         $pattern1 = '/<strong>Created by:<\/strong>\s+Admin/';
         $pattern2 = '/<strong>Updated by:<\/strong>\s+Admin/';
-        $html = $this->call('get', '/products/1')->content();
+        $html = $this->response->content();
         $this->assertRegExp($pattern1, $html);
         $this->assertRegExp($pattern2, $html);
     }

@@ -24,5 +24,11 @@ class ProductsTableSeeder extends Seeder
             'created_by' => 1,
             'created_at' => Carbon::now(),
         ]);
+        DB::table('products')->insert([
+            'name' => 'Keyboard',
+            'quantity' => 3,
+            'created_by' => 1,
+            'created_at' => Carbon::now(),
+        ]);
     }
 }
