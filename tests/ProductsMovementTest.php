@@ -12,8 +12,6 @@ class ProductsMovementTest extends TestCase
     use WithoutMiddleware;
     use DatabaseTransactions;
 
-    // THERE ISN'T THE SHOW PAGE
-
     public function setUp()
     {
         parent::setUp();
