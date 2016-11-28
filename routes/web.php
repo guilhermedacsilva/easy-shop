@@ -24,7 +24,8 @@ Route::group(['middleware' => 'auth'], function(){
     Route::patch('users/{user}/password', 'UserController@updatePassword')->name('users.password.update');
     Route::resource('customers', 'CustomerController');
     Route::resource('products', 'ProductController');
-    Route::resource('movements', 'ProductsMovementController');
+    Route::resource('movements', 'ProductMovementController');
+    Route::resource('purchases', 'PurchaseController');
 
     Route::get('reports/stock', 'ReportController@stock')->name('reports.stock');
     Route::get('reports/stock/quantity', 'Report\Stock\QuantityController@index')->name('reports.stock.quantity');

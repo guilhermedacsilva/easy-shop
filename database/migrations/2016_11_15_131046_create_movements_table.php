@@ -13,14 +13,14 @@ class CreateMovementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('products_movements', function (Blueprint $table) {
+        Schema::create('product_movements', function (Blueprint $table) {
             $table->increments('id');
-            $table->decimal('quantity', 10, 2);
-            $table->decimal('total_value', 10, 2);
+            $table->decimal('quantity', 12, 2);
+            $table->decimal('total_value', 12, 2);
             $table->tinyInteger('type');
+            
             $table->integer('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
-
             $table->integer('created_by')->unsigned();
             $table->foreign('created_by')->references('id')->on('users');
             $table->integer('updated_by')->unsigned()->nullable();
@@ -36,6 +36,6 @@ class CreateMovementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products_movements');
+        Schema::dropIfExists('product_movements');
     }
 }

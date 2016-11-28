@@ -37,7 +37,7 @@ class OutputController extends Controller
         $query = <<<'EOD'
     select name, sum(m.quantity) as quantity, sum(m.total_value) as total_value
     from products p
-    join products_movements m on (m.product_id = p.id)
+    join product_movements m on (m.product_id = p.id)
     where m.type = 1 and m.created_at between ? and ?
     group by p.id, p.name
     order by p.name

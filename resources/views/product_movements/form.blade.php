@@ -10,10 +10,10 @@
         <div class="form-group">
             <strong>Type:</strong>
             <label class="checkbox-inline">
-                {!! Form::radio('type', \EasyShop\Model\ProductsMovement::TYPE_INPUT, null, ['required'=>'']) !!} Input
+                {!! Form::radio('type', \EasyShop\Model\ProductMovement::TYPE_INPUT, null, ['required'=>'']) !!} Input
             </label>
             <label class="checkbox-inline">
-                {!! Form::radio('type', \EasyShop\Model\ProductsMovement::TYPE_OUTPUT, null, ['required'=>'']) !!} Output
+                {!! Form::radio('type', \EasyShop\Model\ProductMovement::TYPE_OUTPUT, null, ['required'=>'']) !!} Output
             </label>
         </div>
     </div>

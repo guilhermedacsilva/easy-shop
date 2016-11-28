@@ -17,7 +17,7 @@ class CustomValidationServiceProvider extends ServiceProvider
         Validator::extend('time', function($attribute, $value, $parameters, $validator) {
             return date_parse_from_format('H:i', $value)['error_count'] == 0;
         });
-        /*
+        /* Checks if it is a valid id
         $parameters[0] = 'ModelName'
         How to use: 'id:ModelName'
         */

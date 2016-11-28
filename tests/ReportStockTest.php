@@ -5,7 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use EasyShop\Model\User;
 use EasyShop\Model\Product;
-use EasyShop\Model\ProductsMovement;
+use EasyShop\Model\ProductMovement;
 
 class ReportStockTest extends TestCase
 {
@@ -34,21 +34,21 @@ class ReportStockTest extends TestCase
 
     public function testInputReport()
     {
-        $type = ProductsMovement::TYPE_INPUT;
+        $type = ProductMovement::TYPE_INPUT;
         $this->runTestInputOutputReportWithNoFilter($type);
         $this->runTestInputOutputReportWithFilter($type);
     }
 
     public function testOutputReport()
     {
-        $type = ProductsMovement::TYPE_OUTPUT;
+        $type = ProductMovement::TYPE_OUTPUT;
         $this->runTestInputOutputReportWithNoFilter($type);
         $this->runTestInputOutputReportWithFilter($type);
     }
 
     protected function runTestInputOutputReportWithNoFilter($type)
     {
-        $url = 'reports/stock/' . strtolower(ProductsMovement::getStringType($type));
+        $url = 'reports/stock/' . strtolower(ProductMovement::getStringType($type));
         $this->visit($url);
 
         $products = Product::orderBy('name')->get();
@@ -56,7 +56,7 @@ class ReportStockTest extends TestCase
         foreach ($products as $product) {
             $results = DB::select(<<<EOT
                 select sum(quantity) as quantity
-                from products_movements
+                from product_movements
                 where product_id = $product->id and type = $type
 EOT
             );
@@ -74,7 +74,7 @@ EOT
 
     protected function runTestInputOutputReportWithFilter($type)
     {
-        $uri = 'reports/stock/' . strtolower(ProductsMovement::getStringType($type));
+        $uri = 'reports/stock/' . strtolower(ProductMovement::getStringType($type));
         $postData = [
             'start_at' => '2000-01-01',
             'end_at' => '2000-01-01',
@@ -86,7 +86,7 @@ EOT
         foreach ($products as $product) {
             $results = DB::select(<<<EOT
                 select sum(quantity) as quantity
-                from products_movements
+                from product_movements
                 where product_id = $product->id
                     and type = $type
                     and created_at between '2000-01-01 00:00:00' and '2000-01-01 23:59:59'

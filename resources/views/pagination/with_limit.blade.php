@@ -4,7 +4,8 @@ $link_limit = 7; // maximum number of links (a little bit inaccurate, but will b
 ?>
 
 @if ($records->lastPage() > 1)
-    <ul class="pagination">
+<div class="text-center">
+    <ul class="pagination text-center">
         <li class="{{ ($records->currentPage() == 1) ? ' disabled' : '' }}">
             <a href="{{ $records->url(1) }}">First</a>
          </li>
@@ -30,4 +31,5 @@ $link_limit = 7; // maximum number of links (a little bit inaccurate, but will b
             <a href="{{ $records->url($records->lastPage()) }}">Last</a>
         </li>
     </ul>
+</div>
 @endif

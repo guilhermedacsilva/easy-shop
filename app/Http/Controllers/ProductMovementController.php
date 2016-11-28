@@ -4,19 +4,19 @@ namespace EasyShop\Http\Controllers;
 
 use Illuminate\Http\Request;
 use EasyShop\Http\Traits\CrudActions;
-use EasyShop\Model\ProductsMovement;
+use EasyShop\Model\ProductMovement;
 use EasyShop\Model\Product;
 use Auth;
 
-class ProductsMovementController extends Controller
+class ProductMovementController extends Controller
 {
     use CrudActions;
 
     public function __construct() {
         $this->initCrud([
-            'model' => 'ProductsMovement',
+            'model' => 'ProductMovement',
             'routePrefix' => 'movements',
-            'viewFolder' => 'products_movements',
+            'viewFolder' => 'product_movements',
             'titleCreate' => 'Movement',
             'indexOrderBy' => 'created_at',
             'indexOrderByAsc' => 'desc',
@@ -32,34 +32,12 @@ class ProductsMovementController extends Controller
             'total_value' => 'required|numeric|min:0',
         ];
     }
-/*
-    protected function beforeUpdate($request, $oldMovement, $data)
-    {
-        $product = $oldMovement->product;
-        $product->subMovement($oldMovement);
-        $product->save();
-    }
 
-    protected function afterUpdate($request, $newMovement)
-    {
-        $product = $newMovement->product;
-        $product->addMovement($newMovement);
-        $product->save();
-    }
-
-    protected function beforeDestroy($id)
-    {
-        $movement = ProductsMovement::find($id);
-        $product = $movement->product;
-        $product->subMovement($movement);
-        $product->save();
-    }
-*/
     protected function changeViewData($data)
     {
         return array_merge($data, [
-            'typeInput' => ProductsMovement::TYPE_INPUT,
-            'typeOutput' => ProductsMovement::TYPE_OUTPUT,
+            'typeInput' => ProductMovement::TYPE_INPUT,
+            'typeOutput' => ProductMovement::TYPE_OUTPUT,
             'products' => Product::all()->pluck('name', 'id')->prepend('---', '0'),
         ]);
     }

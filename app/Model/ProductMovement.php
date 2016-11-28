@@ -4,13 +4,13 @@ namespace EasyShop\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductsMovement extends Model
+class ProductMovement extends Model
 {
     const TYPE_INPUT = 0;
     const TYPE_OUTPUT = 1;
 
     protected $fillable = [
-        'quantity', 'total_value', 'type', 'product_id', 'created_by', 'updated_by',
+        'quantity', 'total_value', 'type', 'product_id', 'created_by', 'updated_by', 'trade_id'
     ];
 
     public function __construct($data = [])

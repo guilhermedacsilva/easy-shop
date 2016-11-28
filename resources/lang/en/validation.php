@@ -2,8 +2,9 @@
 
 return [
 
-    'time'             => 'The :attribute does not match the format hh:mm.',
-    'id'             => ':Attribute invalid.',
+    'time'                  => 'The :attribute does not match the format hh:mm.',
+    'id'                    => ':Attribute invalid.',
+    'delete_referenced'     => 'It can not be deleted, because there is other data that depends on it.',
 
 
     /*

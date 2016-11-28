@@ -4,18 +4,34 @@ namespace EasyShop\Http\Controllers;
 
 use Illuminate\Http\Request;
 use EasyShop\Http\Traits\CrudActions;
-use EasyShop\Model\Product;
-use EasyShop\Model\ProductMovement;
+use EasyShop\Model\Trade;
 use Auth;
 
-class ProductController extends Controller
+class PurchaseController extends Controller
 {
     use CrudActions;
 
-    public function __construct() {
-        $this->initCrud('Product');
+    public function __construct()
+    {
+        $this->initCrud([
+            'model' => 'Trade',
+            'routePrefix' => 'purchases',
+            'titleCreate' => 'Purchase',
+        ]);
     }
 
+    public function index(Request $request)
+    {
+        $records = Trade::with('customer')
+                        ->orderBy('created_at','desc')
+                        ->paginate(10);
+
+        return $this->createListView([
+            'request' => $request,
+            'records' => $records,
+        ]);
+    }
+/*
     protected function getDefaultValidationArray($request)
     {
         return [
@@ -35,4 +51,5 @@ class ProductController extends Controller
         return redirect()->route('products.index')
                         ->with('danger', trans('validation.delete_referenced'));
     }
+*/
 }

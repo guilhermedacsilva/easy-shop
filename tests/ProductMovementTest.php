@@ -5,9 +5,9 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use EasyShop\Model\User;
 use EasyShop\Model\Product;
-use EasyShop\Model\ProductsMovement;
+use EasyShop\Model\ProductMovement;
 
-class ProductsMovementTest extends TestCase
+class ProductMovementTest extends TestCase
 {
     use WithoutMiddleware;
     use DatabaseTransactions;
@@ -18,11 +18,11 @@ class ProductsMovementTest extends TestCase
         $this->actingAs(User::find(1));
     }
 
-    public function testProductsMovementObserver()
+    public function testProductMovementObserver()
     {
         $product = factory(EasyShop\Model\Product::class)->create();
         $oldQuantity = $product->quantity;
-        $movement = factory(EasyShop\Model\ProductsMovement::class)->create([
+        $movement = factory(EasyShop\Model\ProductMovement::class)->create([
             'product_id' => $product->id
         ]);
         $this->assertEquals($oldQuantity + $movement->quantity, $product->fresh()->quantity);
@@ -37,7 +37,7 @@ class ProductsMovementTest extends TestCase
 
     public function testIndex()
     {
-        $movement = factory(EasyShop\Model\ProductsMovement::class)->create();
+        $movement = factory(EasyShop\Model\ProductMovement::class)->create();
 
         $this->visit('/movements')
             ->within('tr:nth-child(2)', function() use ($movement) {
@@ -55,7 +55,7 @@ class ProductsMovementTest extends TestCase
         $this->visit('/movements/create')
             ->type('333.33', 'quantity')
             ->type('22.22', 'total_value')
-            ->select(ProductsMovement::TYPE_INPUT, 'type')
+            ->select(ProductMovement::TYPE_INPUT, 'type')
             ->select($product->id, 'product_id')
             ->press('Submit')
             ->seePageIs('/movements')
@@ -73,11 +73,11 @@ class ProductsMovementTest extends TestCase
     {
         $product = factory(EasyShop\Model\Product::class)->create();
         $oldQuantity = $product->quantity;
-        $movement = factory(EasyShop\Model\ProductsMovement::class)->create([
+        $movement = factory(EasyShop\Model\ProductMovement::class)->create([
             'product_id' => $product->id
         ]);
 
-        $newMovement = factory(ProductsMovement::class)->make();
+        $newMovement = factory(ProductMovement::class)->make();
 
         $this->visit('/movements')
             ->within('tr:nth-child(2)', function() use ($movement, $product) {
@@ -89,7 +89,7 @@ class ProductsMovementTest extends TestCase
             ->visit("/movements/{$movement->id}/edit")
             ->type($newMovement->quantity, 'quantity')
             ->type($newMovement->total_value, 'total_value')
-            ->select(ProductsMovement::TYPE_INPUT, 'type')
+            ->select(ProductMovement::TYPE_INPUT, 'type')
             ->select($product->id, 'product_id')
             ->press('Submit')
             ->seePageIs('/movements')
@@ -104,7 +104,7 @@ class ProductsMovementTest extends TestCase
     {
         $product = factory(EasyShop\Model\Product::class)->create();
         $oldQuantity = $product->quantity;
-        $movement = factory(EasyShop\Model\ProductsMovement::class)->create([
+        $movement = factory(EasyShop\Model\ProductMovement::class)->create([
             'product_id' => $product->id
         ]);
 

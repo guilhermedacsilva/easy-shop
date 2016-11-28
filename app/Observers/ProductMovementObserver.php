@@ -3,10 +3,10 @@
 namespace EasyShop\Observers;
 
 use EasyShop\Model\Product;
-use EasyShop\Model\ProductsMovement;
+use EasyShop\Model\ProductMovement;
 use Auth;
 
-class ProductsMovementObserver
+class ProductMovementObserver
 {
     public function creating($movement)
     {
@@ -22,7 +22,7 @@ class ProductsMovementObserver
     {
         $movement->updated_by = Auth::user()->id;
 
-        $oldMovement = ProductsMovement::find($movement->id);
+        $oldMovement = ProductMovement::find($movement->id);
         $this->cancelProductMovement($oldMovement);
     }
 

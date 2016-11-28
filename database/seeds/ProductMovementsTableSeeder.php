@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
-use EasyShop\Model\ProductsMovement;
+use EasyShop\Model\ProductMovement;
 
-class ProductsMovementsTableSeeder extends Seeder
+class ProductMovementsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,16 +14,16 @@ class ProductsMovementsTableSeeder extends Seeder
     public function run()
     {
         for ($i = 1; $i <= 2; $i++) {
-            DB::table('products_movements')->insert([
-                'type' => ProductsMovement::TYPE_INPUT,
+            DB::table('product_movements')->insert([
+                'type' => ProductMovement::TYPE_INPUT,
                 'quantity' => 2,
                 'total_value' => 10,
                 'product_id' => 1,
                 'created_by' => 1,
                 'created_at' => Carbon::createFromDate(2000, 1, $i),
             ]);
-            DB::table('products_movements')->insert([
-                'type' => ProductsMovement::TYPE_OUTPUT,
+            DB::table('product_movements')->insert([
+                'type' => ProductMovement::TYPE_OUTPUT,
                 'quantity' => 1,
                 'total_value' => 5,
                 'product_id' => 1,
@@ -32,16 +32,16 @@ class ProductsMovementsTableSeeder extends Seeder
             ]);
         }
         for ($i = 1; $i <= 2; $i++) {
-            DB::table('products_movements')->insert([
-                'type' => ProductsMovement::TYPE_INPUT,
+            DB::table('product_movements')->insert([
+                'type' => ProductMovement::TYPE_INPUT,
                 'quantity' => 10,
                 'total_value' => 20,
                 'product_id' => 2,
                 'created_by' => 1,
                 'created_at' => Carbon::createFromDate(2000, 1, $i),
             ]);
-            DB::table('products_movements')->insert([
-                'type' => ProductsMovement::TYPE_OUTPUT,
+            DB::table('product_movements')->insert([
+                'type' => ProductMovement::TYPE_OUTPUT,
                 'quantity' => 1,
                 'total_value' => 10,
                 'product_id' => 2,

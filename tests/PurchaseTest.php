@@ -5,8 +5,9 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use EasyShop\Model\User;
 use EasyShop\Model\Product;
+use EasyShop\Model\Trade;
 
-class ProductTest extends TestCase
+class PurchaseTest extends TestCase
 {
     use WithoutMiddleware;
     use DatabaseTransactions;
@@ -19,10 +20,18 @@ class ProductTest extends TestCase
 
     public function testIndex()
     {
-        $this->visit('/products')
-            ->seeInElement('td','Broom');
-    }
+        $trades = Trade::orderBy('created_at', 'desc')->get();
 
+        $this->visit('purchases');
+        $row = 2;
+        foreach ($trades as $trade) {
+            $this->within("tr:nth-child($row)", function() use ($trade) {
+                $this->see($trade->final_value);
+            });
+            $row++;
+        }
+    }
+/*
     public function testCreate()
     {
         $this->visit('/products/create')
@@ -84,5 +93,5 @@ class ProductTest extends TestCase
             ->seePageIs('products')
             ->see(trans('validation.delete_referenced'));
     }
-
+*/
 }

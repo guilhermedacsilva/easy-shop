@@ -103,8 +103,10 @@ trait CrudActions {
 
     public function destroy($id)
     {
-        $this->beforeDestroy($id);
-        ($this->params['fullClassName'])::destroy($id);
+        if ($action = $this->beforeDestroyRedirect($id)) {
+            return $action;
+        }
+        $this->params['fullClassName']::destroy($id);
         $this->afterDestroy($id);
         return redirect()->route($this->getCrudRoute('index'))
                         ->with('success',$this->params['titleCreate'].' deleted successfully');
@@ -144,7 +146,12 @@ trait CrudActions {
     protected function beforeUpdate($request, $oldRecord, $newData) {}
     protected function afterUpdate($request, $newRecord) {}
 
-    protected function beforeDestroy($id) {}
+    /* return false: not redirect and delete the record
+    return redirect(): it will NOT delete the record
+    */
+    protected function beforeDestroyRedirect($id) {
+        return false;
+    }
     protected function afterDestroy($id) {}
 
     protected function createView($data) {
