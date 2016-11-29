@@ -15,8 +15,8 @@ class CreateTradesTable extends Migration
             $table->decimal('discount', 12, 2);
             $table->decimal('final_value', 12, 2);
 
-            $table->integer('customer_id')->unsigned()->nullable();
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->integer('person_id')->unsigned()->nullable();
+            $table->foreign('person_id')->references('id')->on('people');
             $table->integer('created_by')->unsigned();
             $table->foreign('created_by')->references('id')->on('users');
             $table->integer('updated_by')->unsigned()->nullable();

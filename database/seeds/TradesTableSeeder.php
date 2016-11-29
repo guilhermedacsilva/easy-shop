@@ -33,7 +33,7 @@ class TradesTableSeeder extends Seeder
             'final_value' => 45,
             'created_by' => 1,
             'created_at' => '2000-01-02 00:00:01',
-            'customer_id' => 1
+            'person_id' => 1
         ]);
         DB::table('product_movements')->insert([
             'quantity' => 1,

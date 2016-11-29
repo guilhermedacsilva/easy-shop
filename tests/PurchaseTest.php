@@ -20,18 +20,38 @@ class PurchaseTest extends TestCase
 
     public function testIndex()
     {
-        $trades = Trade::orderBy('created_at', 'desc')->get();
+        $purchases = Trade::with('person')
+                        ->where('type','=',Trade::TYPE_PURCHASE)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
 
         $this->visit('purchases');
         $row = 2;
-        foreach ($trades as $trade) {
-            $this->within("tr:nth-child($row)", function() use ($trade) {
-                $this->see($trade->final_value);
+        foreach ($purchases as $purchase) {
+            $this->within("tr:nth-child($row)", function() use ($purchase) {
+
+                $this->see($purchase->total_value)
+                    ->see($purchase->discount)
+                    ->see($purchase->final_value);
+
+                if ($purchase->person)
+                    $this->see($purchase->person->name);
             });
             $row++;
         }
+
+        $sales = Trade::with('person')
+                        ->where('type','=',Trade::TYPE_SALE)
+                        ->get();
+
+        foreach ($sales as $sale) {
+            $this->dontSee($sale->total_value)
+                ->dontSee($sale->discount)
+                ->dontSee($sale->final_value);
+        }
     }
-/*
+
+    /*
     public function testCreate()
     {
         $this->visit('/products/create')
@@ -42,7 +62,6 @@ class PurchaseTest extends TestCase
             ->seeInElement('td','Table')
             ->seeInElement('td','8');
     }
-
     public function testShow()
     {
         $this->visit('/products/1')

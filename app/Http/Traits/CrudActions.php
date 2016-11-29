@@ -210,7 +210,7 @@ trait CrudActions {
                 $data['title'] = 'Edit ' . $this->params['titleCreate'];
 
             } else {
-                $data['title'] = $this->params['model'];
+                $data['title'] = $this->params['titleCreate'];
             }
         }
 

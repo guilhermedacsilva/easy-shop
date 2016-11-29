@@ -22,7 +22,8 @@ class PurchaseController extends Controller
 
     public function index(Request $request)
     {
-        $records = Trade::with('customer')
+        $records = Trade::with('person','movements.product')
+                        ->where('type','=', Trade::TYPE_PURCHASE)
                         ->orderBy('created_at','desc')
                         ->paginate(10);
 
@@ -31,6 +32,7 @@ class PurchaseController extends Controller
             'records' => $records,
         ]);
     }
+    
 /*
     protected function getDefaultValidationArray($request)
     {

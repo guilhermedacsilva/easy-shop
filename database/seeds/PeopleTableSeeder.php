@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class CustomersTableSeeder extends Seeder
+class PeopleTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,10 +11,10 @@ class CustomersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('customers')->insert([
+        DB::table('people')->insert([
             'name' => 'John',
         ]);
-        DB::table('customers')->insert([
+        DB::table('people')->insert([
             'name' => 'Bill',
         ]);
     }
