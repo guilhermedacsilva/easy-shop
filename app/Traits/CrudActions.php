@@ -1,11 +1,12 @@
 <?php
 
-namespace EasyShop\Http\Traits;
+namespace EasyShop\Traits;
 
 use App;
 use Illuminate\Http\Request;
 
-trait CrudActions {
+trait CrudActions
+{
 
     /* CAN BE EDITED
     Used: config('app.name') . "\\{$modelPath}{$model}"
@@ -21,9 +22,13 @@ trait CrudActions {
     private $params;
 
     /* array('model' => '...') or 'model...' */
-    protected function initCrud($params) {
-        if (is_string($params)) $params = ['model'=>$params];
-        elseif (!isset($params['model'])) throw new Exception("CrudActions: Invalid model", 1);
+    protected function initCrud($params)
+    {
+        if (is_string($params)) {
+            $params = ['model'=>$params];
+        } elseif (!isset($params['model'])) {
+            throw new Exception("CrudActions: Invalid model", 1);
+        }
 
         $model = $params['model'];
         $params = array_add($params, 'routePrefix', str_plural(strtolower($model)));
@@ -61,7 +66,7 @@ trait CrudActions {
         $fields = array_keys($validationArray);
         $data = $this->createStoreData($request, $fields);
 
-        $this->beforeStore($request, $data);
+        $data = $this->beforeStore($request, $data);
         $newRecord = ($this->params['fullClassName'])::create($data);
         $this->afterStore($request, $newRecord);
 
@@ -86,7 +91,7 @@ trait CrudActions {
         $fields = array_keys($validationArray);
         $data = $this->createUpdateData($request, $fields, $record);
 
-        $this->beforeUpdate($request, $record, $data);
+        $data = $this->beforeUpdate($request, $record, $data);
         $record->update($data);
         $this->afterStore($request, $record);
 
@@ -109,7 +114,7 @@ trait CrudActions {
         $this->params['fullClassName']::destroy($id);
         $this->afterDestroy($id);
         return redirect()->route($this->getCrudRoute('index'))
-                        ->with('success',$this->params['titleCreate'].' deleted successfully');
+                        ->with('success', $this->params['titleCreate'].' deleted successfully');
     }
 
 
@@ -140,25 +145,40 @@ trait CrudActions {
     {
         return $request->only($fields);
     }
-    protected function beforeStore($request, $data) {}
-    protected function afterStore($request, $record) {}
+    protected function beforeStore($request, $data)
+    {
+        return $data;
+    }
+    protected function afterStore($request, $record)
+    {
+    }
 
-    protected function beforeUpdate($request, $oldRecord, $newData) {}
-    protected function afterUpdate($request, $newRecord) {}
+    protected function beforeUpdate($request, $oldRecord, $newData)
+    {
+        return $newData;
+    }
+    protected function afterUpdate($request, $newRecord)
+    {
+    }
 
     /* return false: not redirect and delete the record
     return redirect(): it will NOT delete the record
     */
-    protected function beforeDestroyRedirect($id) {
+    protected function beforeDestroyRedirect($id)
+    {
         return false;
     }
-    protected function afterDestroy($id) {}
+    protected function afterDestroy($id)
+    {
+    }
 
-    protected function createView($data) {
+    protected function createView($data)
+    {
         return view($data['layout'], $this->createViewData($data));
     }
 
-    protected function createListView($data = []) {
+    protected function createListView($data = [])
+    {
         $data = array_merge([
             'action' => 'index',
             'includeView' => $this->getCrudView('list'),
@@ -166,7 +186,8 @@ trait CrudActions {
         return view('layouts.simple_page_pagination', $this->createViewData($data));
     }
 
-    protected function createFormView($data = []) {
+    protected function createFormView($data = [])
+    {
         $data = array_merge([
             'action' => 'create',
             'includeView' => $this->getCrudView('form'),
@@ -174,7 +195,8 @@ trait CrudActions {
         return view('layouts.simple_page', $this->createViewData($data));
     }
 
-    protected function createShowView($data = []) {
+    protected function createShowView($data = [])
+    {
         $data = array_merge([
             'action' => 'show',
             'includeView' => $this->getCrudView('show'),
@@ -185,7 +207,8 @@ trait CrudActions {
     /* Available
     action => 'index' or 'create' or 'edit' or 'show'
     */
-    protected function createViewData($data = []) {
+    protected function createViewData($data = [])
+    {
         $data['action'] = isset($data['action']) ? $data['action'] : 'index';
         $data['routePrefix'] = $this->params['routePrefix'];
 
@@ -202,13 +225,10 @@ trait CrudActions {
         if (!isset($data['title'])) {
             if ($data['action'] == 'index') {
                 $data['title'] = $this->params['titleIndex'];
-
             } elseif ($data['action'] == 'create') {
                 $data['title'] = 'Create New ' . $this->params['titleCreate'];
-
             } elseif ($data['action'] == 'edit') {
                 $data['title'] = 'Edit ' . $this->params['titleCreate'];
-
             } else {
                 $data['title'] = $this->params['titleCreate'];
             }
@@ -222,16 +242,18 @@ trait CrudActions {
         return $data;
     }
 
-    protected function getCrudRoute($suffix) {
+    protected function getCrudRoute($suffix)
+    {
         return $this->params['routePrefix'] . '.' . $suffix;
     }
 
-    protected function getCrudView($suffix) {
+    protected function getCrudView($suffix)
+    {
         return $this->params['viewFolder'] . '.' . $suffix;
     }
 
-    protected function findById($id) {
+    protected function findById($id)
+    {
         return ($this->params['fullClassName'])::find($id);
     }
-
 }

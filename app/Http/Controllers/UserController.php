@@ -5,7 +5,7 @@ namespace EasyShop\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use EasyShop\Model\User;
-use EasyShop\Http\Traits\CrudActions;
+use EasyShop\Traits\CrudActions;
 use Carbon\Carbon;
 use Auth;
 

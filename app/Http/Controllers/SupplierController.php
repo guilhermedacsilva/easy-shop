@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use EasyShop\Traits\CrudActions;
 use EasyShop\Model\Person;
 
-class CustomerController extends Controller
+class SupplierController extends Controller
 {
     use CrudActions;
 
@@ -14,15 +14,15 @@ class CustomerController extends Controller
     {
         $this->initCrud([
             'model' => 'Person',
-            'routePrefix' => 'customers',
-            'titleCreate' => 'Customer',
+            'routePrefix' => 'suppliers',
+            'titleCreate' => 'Supplier',
         ]);
     }
 
     public function index(Request $request)
     {
-        $records = Person::customer()->index();
-        
+        $records = Person::supplier()->index();
+
         return $this->createListView([
             'request' => $request,
             'records' => $records,
@@ -31,7 +31,7 @@ class CustomerController extends Controller
 
     protected function beforeStore($request, $data)
     {
-        $data['type'] = Person::TYPE_CUSTOMER;
+        $data['type'] = Person::TYPE_SUPPLIER;
         return $data;
     }
 }

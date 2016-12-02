@@ -10,13 +10,13 @@ class LoginTest extends TestCase
     public function testGuestUser()
     {
         $this->visit('/')
-             ->seeInElement('.panel-heading','Login');
+             ->seeInElement('.panel-heading', 'Login');
     }
 
     public function testLogin()
     {
         $this->actingAs(User::find(1))
             ->visit('/')
-            ->seeInElement('.panel-body','You are logged in!');
+            ->seeInElement('.panel-body', 'You are logged in!');
     }
 }

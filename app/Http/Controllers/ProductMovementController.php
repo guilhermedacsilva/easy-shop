@@ -3,7 +3,7 @@
 namespace EasyShop\Http\Controllers;
 
 use Illuminate\Http\Request;
-use EasyShop\Http\Traits\CrudActions;
+use EasyShop\Traits\CrudActions;
 use EasyShop\Model\ProductMovement;
 use EasyShop\Model\Product;
 use Auth;

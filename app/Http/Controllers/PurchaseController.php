@@ -3,7 +3,7 @@
 namespace EasyShop\Http\Controllers;
 
 use Illuminate\Http\Request;
-use EasyShop\Http\Traits\CrudActions;
+use EasyShop\Traits\CrudActions;
 use EasyShop\Model\Trade;
 use Auth;
 
@@ -22,9 +22,9 @@ class PurchaseController extends Controller
 
     public function index(Request $request)
     {
-        $records = Trade::with('person','movements.product')
-                        ->where('type','=', Trade::TYPE_PURCHASE)
-                        ->orderBy('created_at','desc')
+        $records = Trade::with('person', 'movements.product')
+                        ->where('type', '=', Trade::TYPE_PURCHASE)
+                        ->orderBy('created_at', 'desc')
                         ->paginate(10);
 
         return $this->createListView([
@@ -32,26 +32,4 @@ class PurchaseController extends Controller
             'records' => $records,
         ]);
     }
-    
-/*
-    protected function getDefaultValidationArray($request)
-    {
-        return [
-            'name' => 'required|between:1,255',
-            'quantity' => 'required|numeric',
-        ];
-    }
-
-    protected function beforeDestroyRedirect($id)
-    {
-        $product = Product::find($id);
-        $movements = $product->movements()->get();
-
-        if ($movements->isEmpty()) {
-            return false;
-        }
-        return redirect()->route('products.index')
-                        ->with('danger', trans('validation.delete_referenced'));
-    }
-*/
 }
