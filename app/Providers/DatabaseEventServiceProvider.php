@@ -3,6 +3,11 @@
 namespace EasyShop\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use EasyShop\Model\Product;
+use EasyShop\Model\ProductMovement;
+use EasyShop\Model\Trade;
+use EasyShop\Observers\CreatedByObserver;
+use EasyShop\Observers\ProductMovementObserver;
 
 class DatabaseEventServiceProvider extends ServiceProvider
 {
@@ -13,8 +18,9 @@ class DatabaseEventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \EasyShop\Model\Product::observe(\EasyShop\Observers\CreatedByObserver::class);
-        \EasyShop\Model\ProductMovement::observe(\EasyShop\Observers\CreatedByObserver::class);
-        \EasyShop\Model\ProductMovement::observe(\EasyShop\Observers\ProductMovementObserver::class);
+        Trade::observe(CreatedByObserver::class);
+        Product::observe(CreatedByObserver::class);
+        ProductMovement::observe(CreatedByObserver::class);
+        ProductMovement::observe(ProductMovementObserver::class);
     }
 }

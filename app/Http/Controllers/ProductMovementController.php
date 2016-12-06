@@ -6,13 +6,15 @@ use Illuminate\Http\Request;
 use EasyShop\Traits\CrudActions;
 use EasyShop\Model\ProductMovement;
 use EasyShop\Model\Product;
+use EasyShop\Helper\ViewFormHelper;
 use Auth;
 
 class ProductMovementController extends Controller
 {
     use CrudActions;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->initCrud([
             'model' => 'ProductMovement',
             'routePrefix' => 'movements',
@@ -38,8 +40,7 @@ class ProductMovementController extends Controller
         return array_merge($data, [
             'typeInput' => ProductMovement::TYPE_INPUT,
             'typeOutput' => ProductMovement::TYPE_OUTPUT,
-            'products' => Product::all()->pluck('name', 'id')->prepend('---', '0'),
+            'products' => ViewFormHelper::createSelectList(Product::all()),
         ]);
     }
-
 }

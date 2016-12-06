@@ -3,9 +3,11 @@
 namespace EasyShop\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use EasyShop\Traits\CrudActions;
 use EasyShop\Model\Trade;
 use EasyShop\Model\Person;
+use EasyShop\Helper\ViewFormHelper;
 use Auth;
 
 class PurchaseController extends Controller
@@ -33,23 +35,30 @@ class PurchaseController extends Controller
 
     protected function changeViewData($data)
     {
+
         $suppliers = Person::supplier()
                             ->orderBy('name')
-                            ->get()
-                            ->pluck('name', 'id')
-                            ->prepend('---', 0);
-
+                            ->get();
 
         return array_merge($data, [
-            'suppliers' => $suppliers,
+            'suppliers' => ViewFormHelper::createSelectList($suppliers),
         ]);
+    }
+
+    protected function getStoreValidationArray($request)
+    {
+        return [
+            'supplier' => 'exists:people,id'
+        ];
     }
 
     protected function createStoreData($request, $fields)
     {
+        $supplier = $request->input('supplier') ? $request->input('supplier') : null;
         $data = [
             'type' => Trade::TYPE_PURCHASE,
-
+            'person_id' => $supplier,
         ];
+        return $data;
     }
 }

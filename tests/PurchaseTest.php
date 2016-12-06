@@ -21,27 +21,28 @@ class PurchaseTest extends TestCase
     public function testIndex()
     {
         $purchases = Trade::with('person')
-                        ->where('type','=',Trade::TYPE_PURCHASE)
+                        ->where('type', '=', Trade::TYPE_PURCHASE)
                         ->orderBy('created_at', 'desc')
                         ->get();
 
         $this->visit('purchases');
         $row = 2;
         foreach ($purchases as $purchase) {
-            $this->within("tr:nth-child($row)", function() use ($purchase) {
+            $this->within("tr:nth-child($row)", function () use ($purchase) {
 
                 $this->see($purchase->total_value)
                     ->see($purchase->discount)
                     ->see($purchase->final_value);
 
-                if ($purchase->person)
+                if ($purchase->person) {
                     $this->see($purchase->person->name);
+                }
             });
             $row++;
         }
 
         $sales = Trade::with('person')
-                        ->where('type','=',Trade::TYPE_SALE)
+                        ->where('type', '=', Trade::TYPE_SALE)
                         ->get();
 
         foreach ($sales as $sale) {
@@ -51,17 +52,14 @@ class PurchaseTest extends TestCase
         }
     }
 
-    /*
     public function testCreate()
     {
-        $this->visit('/products/create')
-            ->type('Table', 'name')
-            ->type('8', 'quantity')
-            ->press('Submit')
-            ->seePageIs('/products')
-            ->seeInElement('td','Table')
-            ->seeInElement('td','8');
+        $this->visit('/purchases/create')
+            ->select('3', 'supplier')
+            ->press('Open purchase');
     }
+
+    /*
     public function testShow()
     {
         $this->visit('/products/1')
