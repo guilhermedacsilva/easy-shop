@@ -10,8 +10,16 @@ class Trade extends Model
     const TYPE_SALE = 1;
 
     protected $fillable = [
-        'type', 'total_value', 'discount', 'final_value', 'person_id', 'created_by', 'updated_by'
+        'type', 'total_value', 'discount', 'final_value', 'person_id', 'closed', 'created_by', 'updated_by'
     ];
+
+    public function scopePurchasesIndex($query)
+    {
+        return $query->with('person', 'movements.product')
+                    ->where('type', '=', self::TYPE_PURCHASE)
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
+    }
 
     public function getType()
     {
@@ -31,10 +39,9 @@ class Trade extends Model
     public function productsNames()
     {
         $productNames = collect();
-        $this->movements->each(function($movement) use ($productNames) {
+        $this->movements->each(function ($movement) use ($productNames) {
             $productNames->push($movement->product->name);
         });
         return $productNames->unique()->implode(', ');
     }
-
 }

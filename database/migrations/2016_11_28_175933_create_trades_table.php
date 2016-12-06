@@ -11,9 +11,10 @@ class CreateTradesTable extends Migration
         Schema::create('trades', function (Blueprint $table) {
             $table->increments('id');
             $table->tinyInteger('type');
-            $table->decimal('total_value', 12, 2);
-            $table->decimal('discount', 12, 2);
-            $table->decimal('final_value', 12, 2);
+            $table->decimal('total_value', 12, 2)->default(0);
+            $table->decimal('discount', 12, 2)->default(0);
+            $table->decimal('final_value', 12, 2)->default(0);
+            $table->boolean('closed')->default(false);
 
             $table->integer('person_id')->unsigned()->nullable();
             $table->foreign('person_id')->references('id')->on('people');

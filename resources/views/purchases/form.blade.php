@@ -8,20 +8,13 @@
 
     <div class="col-xs-12">
         <div class="form-group">
-            <strong>Name:</strong>
-            {!! Form::text('name', null, ['placeholder' => 'Name','class' => 'form-control','required' => '', 'autofocus' => '','maxlength' => '255']) !!}
-        </div>
-    </div>
-
-    <div class="col-xs-12">
-        <div class="form-group">
-            <strong>Quantity:</strong>
-            {!! Form::text('quantity', null, ['placeholder' => 'Quantity','class' => 'form-control','required' => '']) !!}
+            <strong>Customer:</strong>
+            {!! Form::select('person_id', $suppliers, null, ['class' => 'form-control']) !!}
         </div>
     </div>
 
     <div class="col-xs-6">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Open purchase</button>
     </div>
 
     {!! Form::close() !!}

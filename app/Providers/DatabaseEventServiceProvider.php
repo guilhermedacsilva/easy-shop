@@ -13,7 +13,8 @@ class DatabaseEventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \EasyShop\Model\Product::observe(\EasyShop\Observers\ProductObserver::class);
+        \EasyShop\Model\Product::observe(\EasyShop\Observers\CreatedByObserver::class);
+        \EasyShop\Model\ProductMovement::observe(\EasyShop\Observers\CreatedByObserver::class);
         \EasyShop\Model\ProductMovement::observe(\EasyShop\Observers\ProductMovementObserver::class);
     }
 }
