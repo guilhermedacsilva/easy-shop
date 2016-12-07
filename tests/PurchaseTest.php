@@ -1,11 +1,11 @@
 <?php
 
+use EasyShop\Model\User;
+use EasyShop\Model\Trade;
+use EasyShop\Model\Product;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use EasyShop\Model\User;
-use EasyShop\Model\Product;
-use EasyShop\Model\Trade;
 
 class PurchaseTest extends TestCase
 {
@@ -29,7 +29,6 @@ class PurchaseTest extends TestCase
         $row = 2;
         foreach ($purchases as $purchase) {
             $this->within("tr:nth-child($row)", function () use ($purchase) {
-
                 $this->see($purchase->total_value)
                     ->see($purchase->discount)
                     ->see($purchase->final_value);
@@ -54,9 +53,32 @@ class PurchaseTest extends TestCase
 
     public function testCreate()
     {
-        $this->visit('/purchases/create')
+        $this->visit('purchases/create')
             ->select('3', 'supplier')
             ->press('Open purchase');
+
+        $record = Trade::latest()->first();
+        $this->seePageIs("purchases/$record->id/edit");
+    }
+
+    public function testEdit()
+    {
+        $purchase = Trade::create([
+            'type' => Trade::TYPE_PURCHASE,
+        ]);
+        $page = "purchases/$purchase->id/edit";
+        $product = Product::find(1);
+        $this->visit($page)
+            ->select(1, 'product')
+            ->type(10, 'quantity')
+            ->type(20, 'total_value')
+            ->press('Add to cart')
+            ->seePageIs($page)
+            ->within('tr:nth-child(2)', function () use ($product) {
+                $this->see(10)
+                    ->see(20)
+                    ->see($product->name);
+            });
     }
 
     /*
@@ -69,24 +91,6 @@ class PurchaseTest extends TestCase
 
         $pattern = '/<strong>Created by:<\/strong>\s+Admin/';
         $this->assertRegExp($pattern, $this->response->content());
-    }
-
-    public function testEdit()
-    {
-        $this->visit('/products/1/edit')
-            ->type('Notebook', 'name')
-            ->type('12.34', 'quantity')
-            ->press('Submit')
-            ->seePageIs('/products')
-            ->seeInElement('td','Notebook')
-            ->seeInElement('td','12.34')
-            ->visit('/products/1');
-
-        $pattern1 = '/<strong>Created by:<\/strong>\s+Admin/';
-        $pattern2 = '/<strong>Updated by:<\/strong>\s+Admin/';
-        $html = $this->response->content();
-        $this->assertRegExp($pattern1, $html);
-        $this->assertRegExp($pattern2, $html);
     }
 
     public function testDestroyWithoutRelationship()

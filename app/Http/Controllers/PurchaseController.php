@@ -33,6 +33,13 @@ class PurchaseController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        return $this->createFormView([
+            'includeView' => $this->getCrudView('form_create'),
+        ]);
+    }
+
     protected function changeViewData($data)
     {
 
@@ -45,20 +52,28 @@ class PurchaseController extends Controller
         ]);
     }
 
-    protected function getStoreValidationArray($request)
+    public function store(Request $request)
     {
-        return [
-            'supplier' => 'exists:people,id'
-        ];
-    }
+        $this->validate($request, [
+            'supplier' => 'exists:people,id',
+        ]);
 
-    protected function createStoreData($request, $fields)
-    {
         $supplier = $request->input('supplier') ? $request->input('supplier') : null;
-        $data = [
+        $record = Trade::create([
             'type' => Trade::TYPE_PURCHASE,
             'person_id' => $supplier,
-        ];
-        return $data;
+        ]);
+
+        return redirect()->route('purchases.edit', ['id' => $record->id]);
+    }
+
+    public function edit($id)
+    {
+        $record = $this->findById($id);
+
+        return $this->createFormView([
+            'action' => 'edit',
+            'record' => $record,
+        ]);
     }
 }
